@@ -1,9 +1,9 @@
-package me.fabriziocoder;
+package me.fabriziocoder.luxanna;
 
 import com.jagrosh.jdautilities.command.CommandClient;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
-import me.fabriziocoder.commands.core.PingCommand;
-import me.fabriziocoder.commands.lol.LoLCommand;
+import me.fabriziocoder.luxanna.commands.core.PingCommand;
+import me.fabriziocoder.luxanna.commands.lol.LoLCommand;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
