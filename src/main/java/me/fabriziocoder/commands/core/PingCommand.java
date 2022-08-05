@@ -1,4 +1,4 @@
-package commands.core;
+package me.fabriziocoder.commands.core;
 
 import com.jagrosh.jdautilities.command.SlashCommand;
 import com.jagrosh.jdautilities.command.SlashCommandEvent;

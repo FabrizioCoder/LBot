@@ -1,4 +1,4 @@
-package commands.lol;
+package me.fabriziocoder.commands.lol;
 
 import com.jagrosh.jdautilities.command.SlashCommand;
 import com.jagrosh.jdautilities.command.SlashCommandEvent;
