@@ -1,4 +1,4 @@
-# LuxannaBot | 1.0-SNAPSHOT
+![Logo](https://cdn.discordapp.com/attachments/1003825080188543007/1005125543773089802/LUXANNA_BOT.png)
 
 This is the source code for the Discord bot portions that compromise Luxanna Bot.
 
