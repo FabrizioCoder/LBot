@@ -1,0 +1,4 @@
+.idea/
+src/main/bot.properties
+# Project exclude paths
+/target/
