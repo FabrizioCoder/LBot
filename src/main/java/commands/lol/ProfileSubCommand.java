@@ -79,7 +79,6 @@ public class ProfileSubCommand extends SlashCommand {
 
         final ChampionMasteries championMasteries = summoner.getChampionMasteries();
         final LeaguePositions rankedEntries = summoner.getLeaguePositions();
-        // final MatchHistory = summoner.matchHistory().get();
 
         String[] basicInformation = {String.format("`Name:` %s", summoner.getName()), String.format("`Level:` %s", summoner.getLevel()), String.format("`Platform:` %s", capitalize(summoner.getRegion().name().replace("_", " ").toLowerCase())), String.format("`Icon URL:` [View here](%s)", summoner.getProfileIcon().getImage().getURL()),};
 
@@ -117,26 +116,6 @@ public class ProfileSubCommand extends SlashCommand {
             String[] rankedStats = {String.format("`Solo/Duo:` %s", textSoloQ), String.format("`Flex:` %s", textFlex), String.format("`TFT:` %s", textTFT)};
             embed.addField("> Ranked Stats", String.join("\n", rankedStats), false);
         }
-
-        /*
-        if (!matchHistory.exists()) {
-            embed.addField("> Recent Games", "This summoner has not played games", false);
-        } else {
-            StringBuilder str = new StringBuilder();
-            // find a user in the match
-            int i = 0;
-            for (final Match match : matchHistory) {
-                for (final Participant participant : match.getParticipants()) {
-                    if (participant.getSummoner().getId().equals(summoner.getId())) {
-                        str.append(String.format("`%s:`%s %s", i + 1, participant.getTeam().isWinner() ? "✅" : "❌", participant.getChampion().getName()));
-                        break;
-                    }
-                }
-            }
-            embed.addField("> Recent Games", String.join("\n", str), false);
-        }
-        */
-
 
         event.getHook().sendMessageEmbeds(List.of(embed.build())).queue();
 
