@@ -1,4 +1,4 @@
-package me.fabriziocoder.luxanna.commands.lol;
+package me.fabriziocoder.luxanna.commands.lol.summoner;
 
 import com.jagrosh.jdautilities.command.SlashCommand;
 import com.jagrosh.jdautilities.command.SlashCommandEvent;

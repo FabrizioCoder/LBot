@@ -19,6 +19,10 @@
             <id>chew-m2-snapshots</id>
             <url>https://m2.chew.pro/snapshots/</url>
         </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -40,6 +44,12 @@
             <groupId>com.merakianalytics.orianna</groupId>
             <artifactId>orianna</artifactId>
             <version>4.0.0-rc8</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.stelar7</groupId>
+            <artifactId>R4J</artifactId>
+            <version>2.1.21</version>
         </dependency>
     </dependencies>
 
