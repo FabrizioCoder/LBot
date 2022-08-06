@@ -2,15 +2,19 @@ package me.fabriziocoder.luxanna.commands.lol.summoner;
 
 import com.jagrosh.jdautilities.command.SlashCommand;
 import com.jagrosh.jdautilities.command.SlashCommandEvent;
+import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteries;
 import com.merakianalytics.orianna.types.core.league.LeagueEntry;
 import com.merakianalytics.orianna.types.core.league.LeaguePositions;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
+import me.fabriziocoder.luxanna.utils.MatchUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import no.stelar7.api.r4j.basic.constants.api.regions.LeagueShard;
+import no.stelar7.api.r4j.pojo.lol.match.v5.MatchParticipant;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -56,8 +60,8 @@ public class ProfileSubCommand extends SlashCommand {
 
     private List<Command.Choice> regionChoices() {
         List<Command.Choice> options = new ArrayList<>();
-        for (Region c : Region.values()) {
-            options.add(new Command.Choice(c.name(), c.name()));
+        for (Platform c : Platform.values()) {
+            options.add(new Command.Choice(c.getTag(), c.name()));
         }
         return options;
     }
@@ -79,6 +83,7 @@ public class ProfileSubCommand extends SlashCommand {
 
         final ChampionMasteries championMasteries = summoner.getChampionMasteries();
         final LeaguePositions rankedEntries = summoner.getLeaguePositions();
+        final MatchParticipant lastMatch = MatchUtils.getLastMatch(summoner.getName(), LeagueShard.valueOf(Platform.valueOf(region).getTag()));
 
         String[] basicInformation = {String.format("`Name:` %s", summoner.getName()), String.format("`Level:` %s", summoner.getLevel()), String.format("`Platform:` %s", capitalize(summoner.getRegion().name().replace("_", " ").toLowerCase())), String.format("`Icon URL:` [View here](%s)", summoner.getProfileIcon().getImage().getURL()),};
 
@@ -115,6 +120,12 @@ public class ProfileSubCommand extends SlashCommand {
 
             String[] rankedStats = {String.format("`Solo/Duo:` %s", textSoloQ), String.format("`Flex:` %s", textFlex), String.format("`TFT:` %s", textTFT)};
             embed.addField("> Ranked Stats", String.join("\n", rankedStats), false);
+        }
+
+        if (lastMatch == null) {
+            embed.addField("> Last Game", "This summoner has not played any games", false);
+        } else {
+            embed.addField("> Last Match", String.join("\n", String.format("%s with **%s**, **%s**/**%s**/**%s** **%s CS**", lastMatch.didWin() ? ":white_check_mark: **Victory**" : ":x: **Defeat**", lastMatch.getChampionName(), lastMatch.getKills(), lastMatch.getDeaths(), lastMatch.getAssists(), (lastMatch.getTotalMinionsKilled() + lastMatch.getNeutralMinionsKilled()))), false);
         }
 
         event.getHook().sendMessageEmbeds(List.of(embed.build())).queue();

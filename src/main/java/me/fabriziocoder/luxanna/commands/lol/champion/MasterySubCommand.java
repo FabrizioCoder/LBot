@@ -2,6 +2,7 @@ package me.fabriziocoder.luxanna.commands.lol.champion;
 
 import com.jagrosh.jdautilities.command.SlashCommand;
 import com.jagrosh.jdautilities.command.SlashCommandEvent;
+import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteries;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMastery;
@@ -25,8 +26,8 @@ public class MasterySubCommand extends SlashCommand {
 
     private List<Command.Choice> regionChoices() {
         List<Command.Choice> options = new ArrayList<>();
-        for (Region c : Region.values()) {
-            options.add(new Command.Choice(c.name(), c.name()));
+        for (Platform c : Platform.values()) {
+            options.add(new Command.Choice(c.getTag(), c.name()));
         }
         return options;
     }
