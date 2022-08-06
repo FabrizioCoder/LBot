@@ -3,6 +3,7 @@ package me.fabriziocoder.luxanna.commands.lol.summoner;
 import com.jagrosh.jdautilities.command.SlashCommand;
 import com.jagrosh.jdautilities.command.SlashCommandEvent;
 import com.merakianalytics.orianna.types.common.Platform;
+import com.merakianalytics.orianna.types.common.Queue;
 import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteries;
 import com.merakianalytics.orianna.types.core.league.LeagueEntry;
@@ -113,7 +114,7 @@ public class ProfileSubCommand extends SlashCommand {
             messageEmbed.addField("> Top 3 Champions", String.join("\n", str), true);
         }
 
-        if (!rankedEntries.exists()) {
+        if (!rankedEntries.exists() || rankedEntries.size() == 0) {
             messageEmbed.addField("> Ranked Stats", "This summoner has not played ranked games", false);
         } else {
             String textSoloQ = "*Unranked*";
@@ -121,8 +122,12 @@ public class ProfileSubCommand extends SlashCommand {
             String textTFT = "*Unranked*";
 
             for (final LeagueEntry entry : rankedEntries) {
+                Queue queue = entry.getQueue();
+                if (queue == null) {
+                    break;
+                }
 
-                switch (entry.getQueue()) {
+                switch (queue) {
                     case RANKED_SOLO ->
                             textSoloQ = String.format("%s %s %s (**%s LP**) (**%s W** / **%s L**, %s", EmojiUtils.getRankEmojiByRankName(entry.getTier().toString()), capitalize(entry.getTier().toString().toLowerCase()), entry.getDivision(), entry.getLeaguePoints(), entry.getWins(), entry.getLosses(), Math.round((entry.getWins() * 100d) / (entry.getWins() + entry.getLosses())) + "%)");
                     case RANKED_FLEX ->
