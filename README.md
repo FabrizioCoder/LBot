@@ -9,7 +9,7 @@ This is the source code for the Discord bot portions that compromise Luxanna Bot
 
 ## Screenshots
 
-![Profile Command](https://user-images.githubusercontent.com/74118796/183099131-7bf24c72-23ed-4edf-946c-765ad5349cae.png)
+![Profile Command](https://user-images.githubusercontent.com/74118796/183250665-83423119-dcb6-41be-a397-1cfca423136a.png)
 
 
 ## License
