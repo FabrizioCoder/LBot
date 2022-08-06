@@ -11,6 +11,8 @@ This is the source code for the Discord bot portions that compromise Luxanna Bot
 
 ![Profile Command](https://user-images.githubusercontent.com/74118796/183250665-83423119-dcb6-41be-a397-1cfca423136a.png)
 
+![Mastery Command](https://user-images.githubusercontent.com/74118796/183252921-1f1f9095-d5d5-4427-b33a-88758f455727.png)
+
 
 ## License
 
