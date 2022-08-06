@@ -5,6 +5,7 @@ This is the source code for the Discord bot portions that compromise Luxanna Bot
 ## Authors
 
 - [@FabrizioCoder](https://www.github.com/FabrizioCoder).
+  - Inspired on [Zoe Bot](https://github.com/Zoe-Discord-Bot/Zoe-Discord-Bot) by [@KaluNight](https://github.com/KaluNight).
 
 
 ## Screenshots
