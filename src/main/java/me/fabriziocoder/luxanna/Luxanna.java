@@ -15,7 +15,7 @@ import no.stelar7.api.r4j.basic.APICredentials;
 import no.stelar7.api.r4j.impl.R4J;
 
 import javax.security.auth.login.LoginException;
-import java.io.FileInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -23,22 +23,15 @@ public class Luxanna {
 
     public static void main(String[] args) throws LoginException, IOException {
         Properties properties = new Properties();
-        properties.load(new FileInputStream("src/main/bot.properties"));
+        properties.load(new File("classes/bot.properties").toURI().toURL().openStream());
 
 
-        CommandClientBuilder builder = new CommandClientBuilder()
-                .setOwnerId(properties.getProperty("OWNER_ID"))
-                .setCoOwnerIds(properties.getProperty("CO_OWNER_1_ID"), properties.getProperty("CO_OWNER_2_ID"))
-                .setActivity(Activity.competing("a Ranked"))
-                .setStatus(OnlineStatus.DO_NOT_DISTURB)
-                .useHelpBuilder(false);
+        CommandClientBuilder builder = new CommandClientBuilder().setOwnerId(properties.getProperty("OWNER_ID")).setCoOwnerIds(properties.getProperty("CO_OWNER_1_ID"), properties.getProperty("CO_OWNER_2_ID")).setActivity(Activity.competing("a Ranked")).setStatus(OnlineStatus.DO_NOT_DISTURB).useHelpBuilder(false);
 
         builder.addSlashCommands(new PingCommand(), new LoLCommand(), new HelpCommand());
         CommandClient commandClient = builder.build();
 
-        JDABuilder.createLight(properties.getProperty("BOT_TOKEN"), GatewayIntent.GUILD_MEMBERS)
-                .addEventListeners(commandClient)
-                .build();
+        JDABuilder.createLight(properties.getProperty("BOT_TOKEN"), GatewayIntent.GUILD_MEMBERS).addEventListeners(commandClient).build();
 
         Orianna.setDefaultPlatform(Platform.NORTH_AMERICA);
         Orianna.setRiotAPIKey(properties.getProperty("RIOT_API_KEY"));

@@ -1,5 +1,5 @@
 .idea/
-src/main/bot.properties
+src/main/resources/bot.properties
 # Project exclude paths
-/target/
+target/
 l4j8cache/
