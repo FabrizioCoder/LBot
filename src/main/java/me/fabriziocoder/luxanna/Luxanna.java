@@ -3,6 +3,8 @@ package me.fabriziocoder.luxanna;
 import com.jagrosh.jdautilities.command.CommandClient;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import com.merakianalytics.orianna.Orianna;
+import com.merakianalytics.orianna.types.common.Platform;
+import me.fabriziocoder.luxanna.commands.core.HelpCommand;
 import me.fabriziocoder.luxanna.commands.core.PingCommand;
 import me.fabriziocoder.luxanna.commands.lol.LoLCommand;
 import net.dv8tion.jda.api.JDABuilder;
@@ -31,13 +33,14 @@ public class Luxanna {
                 .setStatus(OnlineStatus.DO_NOT_DISTURB)
                 .useHelpBuilder(false);
 
-        builder.addSlashCommands(new PingCommand(), new LoLCommand());
+        builder.addSlashCommands(new PingCommand(), new LoLCommand(), new HelpCommand());
         CommandClient commandClient = builder.build();
 
         JDABuilder.createLight(properties.getProperty("BOT_TOKEN"), GatewayIntent.GUILD_MEMBERS)
                 .addEventListeners(commandClient)
                 .build();
 
+        Orianna.setDefaultPlatform(Platform.NORTH_AMERICA);
         Orianna.setRiotAPIKey(properties.getProperty("RIOT_API_KEY"));
         Orianna.setDefaultLocale(properties.getProperty("DEFAULT_LOCALE"));
         new R4J(new APICredentials(properties.getProperty("RIOT_API_KEY")));

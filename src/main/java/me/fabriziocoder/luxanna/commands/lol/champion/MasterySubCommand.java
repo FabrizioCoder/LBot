@@ -16,12 +16,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MasterySubCommand extends SlashCommand {
+
+    public static final String COMMAND_NAME = "mastery";
+    public static final String COMMAND_DESCRIPTION = "Shows the best summoner champions";
+
     public MasterySubCommand() {
-        this.name = "mastery";
-        this.help = "Shows the top mastery champions";
+        this.name = COMMAND_NAME;
+        this.help = COMMAND_DESCRIPTION;
         this.cooldown = 15;
         this.guildOnly = false;
-        this.options = List.of(new OptionData(OptionType.STRING, "name", "The summoner's name").setRequired(true), new OptionData(OptionType.STRING, "region", "The region of the summoner").addChoices(regionChoices()).setRequired(true));
+        this.options = List.of(new OptionData(OptionType.STRING, "name", "The name of the summoner to search for").setRequired(true), new OptionData(OptionType.STRING, "region", "The region of the account").addChoices(regionChoices()).setRequired(true));
     }
 
     private List<Command.Choice> regionChoices() {
@@ -30,6 +34,16 @@ public class MasterySubCommand extends SlashCommand {
             options.add(new Command.Choice(c.getTag(), c.name()));
         }
         return options;
+    }
+
+    @Override
+    public String getHelp() {
+        return COMMAND_DESCRIPTION;
+    }
+
+    @Override
+    public String getName() {
+        return COMMAND_NAME;
     }
 
     @Override
