@@ -15,7 +15,8 @@ public class MatchUtils {
         Summoner summonerByName = Summoner.byName(platform, summoner);
 
         LazyList<String> allGamesId = summonerByName.getLeagueGames().getLazy();
-        if (allGamesId.size() < 1) {
+
+        if (allGamesId.size() == 0) {
             return null;
         }
         MatchBuilder matchBuilder = new MatchBuilder(summonerByName.getPlatform());
