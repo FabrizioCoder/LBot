@@ -2,3 +2,4 @@
 src/main/bot.properties
 # Project exclude paths
 /target/
+l4j8cache/
