@@ -8,6 +8,13 @@ This is the source code for the Discord bot portions that compromise Luxanna Bot
   - Inspired on [Zoe Bot](https://github.com/Zoe-Discord-Bot/Zoe-Discord-Bot) by [@KaluNight](https://github.com/KaluNight).
 
 
+## Built with
+
+* [JDA](https://github.com/DV8FromTheWorld/JDA)
+* [R4J](https://github.com/stelar7/R4J)
+* [Orianna](https://github.com/meraki-analytics/orianna)
+
+
 ## Screenshots
 
 ![Profile Command](https://user-images.githubusercontent.com/74118796/183250665-83423119-dcb6-41be-a397-1cfca423136a.png)
