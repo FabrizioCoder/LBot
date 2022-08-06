@@ -30,3 +30,8 @@ This is the source code for the Discord bot portions that compromise Luxanna Bot
 ## Feedback
 
 If you have any feedback, please reach out to me at Discord: `FabrizioCoder#6030`.
+
+
+## Legal information
+Luxanna isn't endorsed by Riot Games.
+League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc.
