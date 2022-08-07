@@ -101,7 +101,9 @@ public class EmojiUtils {
             case "Malzahar" -> emoji = "<:Malzahar:888551753669300305>";
             case "Maokai" -> emoji = "<:Maokai:888551796107264011>";
             case "Master Yi" -> emoji = "<:MaestroYi:888551839304405004>";
+            case "MasterYi" -> emoji = "<:MaestroYi:888551839304405004>";
             case "Miss Fortune" -> emoji = "<:MissFortune:888551882677702717>";
+            case "MissFortune" -> emoji = "<:MissFortune:888551882677702717>";
             case "Wukong" -> emoji = "<:Wukong:888551926042595369>";
             case "Mordekaiser" -> emoji = "<:Mordekaiser:888551969235566652>";
             case "Morgana" -> emoji = "<:Morgana:888552011920982017>";
