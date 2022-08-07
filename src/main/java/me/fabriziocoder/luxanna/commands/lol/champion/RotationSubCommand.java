@@ -17,7 +17,7 @@ import java.util.List;
 
 public class RotationSubCommand extends SlashCommand {
     public static final String COMMAND_NAME = "rotation";
-    public static final String COMMAND_DESCRIPTION = "Show the rotation of a champion";
+    public static final String COMMAND_DESCRIPTION = "Displays the champion rotation";
 
     public RotationSubCommand() {
         this.name = COMMAND_NAME;
