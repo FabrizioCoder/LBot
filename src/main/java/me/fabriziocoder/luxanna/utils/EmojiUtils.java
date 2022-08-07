@@ -146,7 +146,7 @@ public class EmojiUtils {
             case "Swain" -> emoji = "<:Swain:888554080757239868>";
             case "Sylas" -> emoji = "<:Sylas:888554123631419414>";
             case "Syndra" -> emoji = "<:Syndra:888554167180861501>";
-            case "Tahm Kench" -> emoji = "<:TahmKench:888554210218631229>";
+            case "TahmKench" -> emoji = "<:TahmKench:888554210218631229>";
             case "Taliyah" -> emoji = "<:Taliyah:888554253243805756>";
             case "Talon" -> emoji = "<:Talon:888554296604508190>";
             case "Taric" -> emoji = "<:Taric:888554339541590078>";
