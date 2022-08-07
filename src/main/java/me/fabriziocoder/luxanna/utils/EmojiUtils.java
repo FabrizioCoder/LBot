@@ -32,6 +32,7 @@ public class EmojiUtils {
             case "Aphelios" -> emoji = "<:Aphelios:888535078911750185>";
             case "Ashe" -> emoji = "<:Ashe:888535121651716136>";
             case "Aurelion Sol" -> emoji = "<:AurelionSol:888535164517486662>";
+            case "AurelionSol" -> emoji = "<:AurelionSol:888535164517486662>";
             case "Azir" -> emoji = "<:Azir:888535207567847424>";
             case "Bard" -> emoji = "<:Bardo:888535250202939433>";
             case "Bardo" -> emoji = "<:Bardo:888535250202939433>";
@@ -48,6 +49,7 @@ public class EmojiUtils {
             case "Diana" -> emoji = "<:Diana:888535679393472562>";
             case "Draven" -> emoji = "<:Draven:888535722045374495>";
             case "Dr. Mundo" -> emoji = "<:DrMundo:888535765150236712>";
+            case "DrMundo" -> emoji = "<:DrMundo:888535765150236712>";
             case "Ekko" -> emoji = "<:Ekko:888535807827255307>";
             case "Elise" -> emoji = "<:Elise:888535851112484935>";
             case "Evelynn" -> emoji = "<:Evelynn:888535894041194606>";
@@ -69,6 +71,7 @@ public class EmojiUtils {
             case "Ivern" -> emoji = "<:Ivern:888536583626686504>";
             case "Janna" -> emoji = "<:Janna:888536626270187532>";
             case "Jarvan IV" -> emoji = "<:JarvanIV:888536669580587038>";
+            case "JarvanIV" -> emoji = "<:JarvanIV:888536669580587038>";
             case "Jax" -> emoji = "<:Jax:888536711976587266>";
             case "Jayce" -> emoji = "<:Jayce:888536755039522846>";
             case "Jhin" -> emoji = "<:Jhin:888536798169550869>";
@@ -124,6 +127,7 @@ public class EmojiUtils {
             case "Rek'Sai" -> emoji = "<:RekSai:888552925679484930>";
             case "Rell" -> emoji = "<:Rell:888552968956293162>";
             case "Renata Glasc" -> emoji = "<:RenataGlasc:945153657127718932>";
+            case "RenataGlasc" -> emoji = "<:RenataGlasc:945153657127718932>";
             case "Renekton" -> emoji = "<:Renekton:888553011893391390>";
             case "Rengar" -> emoji = "<:Rengar:888553054423629877>";
             case "Riven" -> emoji = "<:Riven:888553348851175516>";
@@ -147,6 +151,7 @@ public class EmojiUtils {
             case "Sylas" -> emoji = "<:Sylas:888554123631419414>";
             case "Syndra" -> emoji = "<:Syndra:888554167180861501>";
             case "TahmKench" -> emoji = "<:TahmKench:888554210218631229>";
+            case "Tahm Kench" -> emoji = "<:TahmKench:888554210218631229>";
             case "Taliyah" -> emoji = "<:Taliyah:888554253243805756>";
             case "Talon" -> emoji = "<:Talon:888554296604508190>";
             case "Taric" -> emoji = "<:Taric:888554339541590078>";
@@ -156,6 +161,7 @@ public class EmojiUtils {
             case "Trundle" -> emoji = "<:Trundle:888554511352885249>";
             case "Tryndamere" -> emoji = "<:Tryndamere:888554554092830762>";
             case "Twisted Fate" -> emoji = "<:TwistedFate:888554597298372708>";
+            case "TwistedFate" -> emoji = "<:TwistedFate:888554597298372708>";
             case "Twitch" -> emoji = "<:Twitch:888554639908298763>";
             case "Udyr" -> emoji = "<:Udyr:888554683369660477>";
             case "Urgot" -> emoji = "<:Urgot:888554726638092328>";
@@ -173,6 +179,7 @@ public class EmojiUtils {
             case "Xayah" -> emoji = "<:Xayah:888555198698635294>";
             case "Xerath" -> emoji = "<:Xerath:888555241514102794>";
             case "Xin Zhao" -> emoji = "<:XinZhao:888555284354699284>";
+            case "XinZhao" -> emoji = "<:XinZhao:888555284354699284>";
             case "Yasuo" -> emoji = "<:Yasuo:888555327367299082>";
             case "Yone" -> emoji = "<:Yone:888555370220519445>";
             case "Yorick" -> emoji = "<:Yorick:888555413837062176>";
