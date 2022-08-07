@@ -2,21 +2,20 @@ package me.fabriziocoder.luxanna.commands.lol.summoner;
 
 import com.jagrosh.jdautilities.command.SlashCommand;
 import com.jagrosh.jdautilities.command.SlashCommandEvent;
-import com.merakianalytics.orianna.types.common.Platform;
-import com.merakianalytics.orianna.types.common.Queue;
-import com.merakianalytics.orianna.types.common.Region;
-import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteries;
-import com.merakianalytics.orianna.types.core.league.LeagueEntry;
-import com.merakianalytics.orianna.types.core.league.LeaguePositions;
-import com.merakianalytics.orianna.types.core.summoner.Summoner;
+import me.fabriziocoder.luxanna.utils.ChampionUtils;
 import me.fabriziocoder.luxanna.utils.EmojiUtils;
 import me.fabriziocoder.luxanna.utils.MatchUtils;
+import me.fabriziocoder.luxanna.utils.SummonerUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import no.stelar7.api.r4j.basic.constants.api.regions.LeagueShard;
+import no.stelar7.api.r4j.basic.constants.types.lol.GameQueueType;
+import no.stelar7.api.r4j.pojo.lol.championmastery.ChampionMastery;
+import no.stelar7.api.r4j.pojo.lol.league.LeagueEntry;
 import no.stelar7.api.r4j.pojo.lol.match.v5.MatchParticipant;
+import no.stelar7.api.r4j.pojo.lol.summoner.Summoner;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -34,9 +33,7 @@ public class ProfileSubCommand extends SlashCommand {
         this.name = COMMAND_NAME;
         this.help = COMMAND_DESCRIPTION;
         this.cooldown = 15;
-        this.options = List.of(new OptionData(OptionType.STRING, "name", "The name of the summoner to search for").setRequired(true), new OptionData(OptionType.STRING, "region", "The region of the account").addChoices(regionChoices()).setRequired(true));
-
-
+        this.options = List.of(new OptionData(OptionType.STRING, "summoner-name", "The name of the summoner to search for").setRequired(true), new OptionData(OptionType.STRING, "region", "The region of the account").addChoices(regionChoices()).setRequired(true));
     }
 
     public static String capitalize(String str) {
@@ -58,15 +55,20 @@ public class ProfileSubCommand extends SlashCommand {
             suffix = "M";
         } else {
             result = number / (1024.0 * 1024 * 1024);
-            suffix = "";
+            suffix = "B";
         }
         return oneDecimal.format(result) + suffix;
     }
 
     private List<Command.Choice> regionChoices() {
         List<Command.Choice> options = new ArrayList<>();
-        for (Platform c : Platform.values()) {
-            options.add(new Command.Choice(c.getTag(), c.name()));
+        LeagueShard[] leagueShards = LeagueShard.values();
+        for (int i = 1; i < leagueShards.length; i++) {
+            if (i >= 12) break;
+            LeagueShard leagueShard = leagueShards[i];
+            String keyName = leagueShard.getKeys()[1];
+            if (keyName.isEmpty()) continue;
+            options.add(new Command.Choice(keyName.toUpperCase(), leagueShard.name()));
         }
         return options;
     }
@@ -85,71 +87,88 @@ public class ProfileSubCommand extends SlashCommand {
     public void execute(SlashCommandEvent event) {
         event.deferReply().queue();
 
-        String summonerName = event.optString("name");
+        String summonerName = event.optString("summoner-name");
         String region = event.optString("region");
 
-        assert summonerName != null;
-        final Summoner summoner = Summoner.named(summonerName).withRegion(Region.valueOf(region)).get();
+        final Summoner summonerData = SummonerUtils.getSummonerByName(summonerName, LeagueShard.valueOf(region));
 
-        if (!summoner.exists()) {
-            event.getHook().editOriginal("That summoner couldn't be found, at least on that region.").queue();
+
+        if (summonerData == null) {
+            event.getHook().editOriginal("[\\❌] That summoner couldn't be found, at least on that region.").queue();
             return;
         }
 
-        final ChampionMasteries championMasteries = summoner.getChampionMasteries();
-        final LeaguePositions rankedEntries = summoner.getLeaguePositions();
-        final MatchParticipant lastMatch = MatchUtils.getLastMatch(summoner.getName(), LeagueShard.valueOf(Platform.valueOf(region).getTag()));
 
-        String[] basicInformation = {String.format("`Name:` %s", summoner.getName()), String.format("`Level:` %s", summoner.getLevel()), String.format("`Platform:` %s", capitalize(summoner.getRegion().name().replace("_", " ").toLowerCase())), String.format("`Icon URL:` [View here](%s)", summoner.getProfileIcon().getImage().getURL()),};
+        final List<ChampionMastery> summonerTopChampions = SummonerUtils.getSummonerTopChampionsSummonerId(summonerData.getSummonerId(), LeagueShard.valueOf(region), 3);
+        final List<LeagueEntry> summonerLeagueEntries = SummonerUtils.getSummonerLeagueEntryBySummonerId(summonerData.getSummonerId(), LeagueShard.valueOf(region));
+        final List<MatchParticipant> summonerRecentThreeMatches = MatchUtils.getSummonerThreeRecentGames(summonerData);
+        final MatchParticipant summonerLastMatch = MatchUtils.getSummonerLastMatchBySummoner(summonerData);
 
-        final EmbedBuilder messageEmbed = new EmbedBuilder().setColor(0x2564f4).setTitle(String.format("%s Profile", event.getJDA().getSelfUser().getName())).setThumbnail(summoner.getProfileIcon().getImage().getURL()).addField("> Basic Information", String.join("\n", basicInformation), true);
 
-        if (!championMasteries.exists()) {
+        // Make embedBuilder
+        final EmbedBuilder messageEmbed = new EmbedBuilder().setColor(0x2564f4).setThumbnail(SummonerUtils.makeProfileIconURL(String.valueOf(summonerData.getProfileIconId()))).setTitle(String.format("%s Profile", event.getJDA().getSelfUser().getName()));
+
+        String[] summonerBasicInformation = {String.format("`Name:` %s", summonerData.getName()), String.format("`Level:` %s", summonerData.getSummonerLevel()), String.format("`Platform:` %s", summonerData.getPlatform().prettyName()), String.format("`Icon URL:` [View here](%s)", SummonerUtils.makeProfileIconURL(String.valueOf(summonerData.getProfileIconId())))};
+        messageEmbed.addField("> Basic Information", String.join("\n", summonerBasicInformation), true);
+
+        // Top Mastery Champions for the Summoner
+        if (summonerTopChampions == null) {
             messageEmbed.addField("> Top 3 Champions", "This summoner has not played champions", true);
         } else {
-            StringBuilder str = new StringBuilder();
-            for (int i = 0; i < 3; i++) {
-                str.append(String.format("`%s:` %s %s (Level %s, **%s**)\n", i + 1, EmojiUtils.getChampionEmojiByChampionName(championMasteries.get(i).getChampion().getName()), championMasteries.get(i).getChampion().getName(), championMasteries.get(i).getLevel(), humanReadableInt(championMasteries.get(i).getPoints())));
+            StringBuilder summonerTopChampionsText = new StringBuilder();
+            for (int i = 0; i < summonerTopChampions.size(); i++) {
+                ChampionMastery championMastery = summonerTopChampions.get(i);
+                String championName = ChampionUtils.getChampionNameById(championMastery.getChampionId());
+                summonerTopChampionsText.append(String.format("`%s.` %s %s (Level %s, **%s**)\n", i + 1, EmojiUtils.getChampionEmojiByChampionName(championName), championName, championMastery.getChampionLevel(), humanReadableInt(championMastery.getChampionPoints())));
             }
-            messageEmbed.addField("> Top 3 Champions", String.join("\n", str), true);
+            messageEmbed.addField(String.format("> Top %s Champions", summonerTopChampions.size()), summonerTopChampionsText.toString(), true);
         }
 
-        if (!rankedEntries.exists() || rankedEntries.size() == 0) {
+        // Ranked stats for the Summoner
+        if (summonerLeagueEntries == null) {
             messageEmbed.addField("> Ranked Stats", "This summoner has not played ranked games", false);
         } else {
-            String textSoloQ = "*Unranked*";
-            String textFlex = "*Unranked*";
-            String textTFT = "*Unranked*";
+            String soloQText = "*Unranked*";
+            String flexSRText = "*Unranked*";
+            String tftText = "*Unranked*";
 
-            for (final LeagueEntry entry : rankedEntries) {
-                Queue queue = entry.getQueue();
-                if (queue == null) {
-                    break;
-                }
+            for (final LeagueEntry entry : summonerLeagueEntries) {
+                GameQueueType queue = entry.getQueueType();
 
                 switch (queue) {
-                    case RANKED_SOLO ->
-                            textSoloQ = String.format("%s %s %s (**%s LP**) (**%s W** / **%s L**, %s", EmojiUtils.getRankEmojiByRankName(entry.getTier().toString()), capitalize(entry.getTier().toString().toLowerCase()), entry.getDivision(), entry.getLeaguePoints(), entry.getWins(), entry.getLosses(), Math.round((entry.getWins() * 100d) / (entry.getWins() + entry.getLosses())) + "%)");
-                    case RANKED_FLEX ->
-                            textFlex = String.format("%s %s %s (**%s LP**) (**%s W** / **%s L**, %s", EmojiUtils.getRankEmojiByRankName(entry.getTier().toString()), capitalize(entry.getTier().toString().toLowerCase()), entry.getDivision(), entry.getLeaguePoints(), entry.getWins(), entry.getLosses(), Math.round((entry.getWins() * 100d) / (entry.getWins() + entry.getLosses())) + "%)");
-                    case RANKED_TFT ->
-                            textTFT = String.format("%s %s %s (**%s LP**) (**%s W** / **%s L**, %s", EmojiUtils.getRankEmojiByRankName(entry.getTier().toString()), capitalize(entry.getTier().toString().toLowerCase()), entry.getDivision(), entry.getLeaguePoints(), entry.getWins(), entry.getLosses(), Math.round((entry.getWins() * 100d) / (entry.getWins() + entry.getLosses())) + "%)");
+                    case RANKED_SOLO_5X5 ->
+                            soloQText = String.format("%s %s %s (**%s LP**) (**%s W** / **%s L**, %s", EmojiUtils.getRankEmojiByRankName(entry.getTier()), capitalize(entry.getTier().toLowerCase()), entry.getTierDivisionType().getDivision(), entry.getLeaguePoints(), entry.getWins(), entry.getLosses(), Math.round((entry.getWins() * 100d) / (entry.getWins() + entry.getLosses())) + "%)");
+                    case RANKED_FLEX_SR ->
+                            flexSRText = String.format("%s %s %s (**%s LP**) (**%s W** / **%s L**, %s", EmojiUtils.getRankEmojiByRankName(entry.getTier()), capitalize(entry.getTier().toLowerCase()), entry.getTierDivisionType().getDivision(), entry.getLeaguePoints(), entry.getWins(), entry.getLosses(), Math.round((entry.getWins() * 100d) / (entry.getWins() + entry.getLosses())) + "%)");
+                    case TEAMFIGHT_TACTICS_RANKED ->
+                            tftText = String.format("%s %s %s (**%s LP**) (**%s W** / **%s L**, %s", EmojiUtils.getRankEmojiByRankName(entry.getTier()), capitalize(entry.getTier().toLowerCase()), entry.getTierDivisionType().getDivision(), entry.getLeaguePoints(), entry.getWins(), entry.getLosses(), Math.round((entry.getWins() * 100d) / (entry.getWins() + entry.getLosses())) + "%)");
                 }
             }
-
-            String[] rankedStats = {String.format("`Solo/Duo:` %s", textSoloQ), String.format("`Flex:` %s", textFlex), String.format("`TFT:` %s", textTFT)};
-            messageEmbed.addField("> Ranked Stats", String.join("\n", rankedStats), false);
+            String[] summonerRankedStatsText = {String.format("`Solo/Duo:` %s", soloQText), String.format("`Flex SR:` %s", flexSRText), String.format("`TFT:` %s", tftText)};
+            messageEmbed.addField("> Ranked Stats", String.join("\n", summonerRankedStatsText), false);
         }
 
-        if (lastMatch == null) {
-            messageEmbed.addField("> Last Game", "This summoner has not played any games", false);
+        // Recent Matches for the Summoner
+        if (summonerRecentThreeMatches == null) {
+            messageEmbed.addField("> Recent Matches", "This summoner has not played any matches", false);
         } else {
-            messageEmbed.addField("> Last Match", String.join("\n", String.format("%s with **%s** %s, **%s**/**%s**/**%s** **%s CS**", lastMatch.didWin() ? ":white_check_mark: **Victory**" : ":x: **Defeat**", lastMatch.getChampionName(), EmojiUtils.getChampionEmojiByChampionName(lastMatch.getChampionName()), lastMatch.getKills(), lastMatch.getDeaths(), lastMatch.getAssists(), (lastMatch.getTotalMinionsKilled() + lastMatch.getNeutralMinionsKilled()))), false);
+            StringBuilder summonerRecentMatchesText = new StringBuilder();
+            for (int i = 0; i < summonerRecentThreeMatches.size(); i++) {
+                MatchParticipant matchParticipant = summonerRecentThreeMatches.get(i);
+                summonerRecentMatchesText.append(String.format("`%s.` %s %s %s\n", i + 1, EmojiUtils.getChampionEmojiByChampionName(matchParticipant.getChampionName()), matchParticipant.didWin() ? ":white_check_mark:" : ":x:", matchParticipant.getChampionName()));
+            }
+            messageEmbed.addField(String.format("> Recent %s Matches", summonerRecentThreeMatches.size()), summonerRecentMatchesText.toString(), false);
         }
+
+        // Last Match for the Summoner
+        if (summonerLastMatch == null) {
+            messageEmbed.addField("> Last Match", "This summoner has not played any matches", false);
+        } else {
+            messageEmbed.addField("> Last Match", String.join("\n", String.format("%s with **%s** %s, **%s**/**%s**/**%s** **%s CS**", summonerLastMatch.didWin() ? ":white_check_mark: **Victory**" : ":x: **Defeat**", summonerLastMatch.getChampionName(), EmojiUtils.getChampionEmojiByChampionName(summonerLastMatch.getChampionName()), summonerLastMatch.getKills(), summonerLastMatch.getDeaths(), summonerLastMatch.getAssists(), (summonerLastMatch.getTotalMinionsKilled() + summonerLastMatch.getNeutralMinionsKilled()))), false);
+        }
+
 
         event.getHook().sendMessageEmbeds(messageEmbed.build()).queue();
 
     }
-
-
 }

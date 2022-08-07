@@ -2,15 +2,14 @@ package me.fabriziocoder.luxanna.commands.lol.champion;
 
 import com.jagrosh.jdautilities.command.SlashCommand;
 import com.jagrosh.jdautilities.command.SlashCommandEvent;
-import com.merakianalytics.orianna.types.common.Platform;
-import com.merakianalytics.orianna.types.common.Region;
-import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteries;
-import com.merakianalytics.orianna.types.core.championmastery.ChampionMastery;
-import com.merakianalytics.orianna.types.core.staticdata.Champion;
-import com.merakianalytics.orianna.types.core.summoner.Summoner;
+import me.fabriziocoder.luxanna.utils.ChampionUtils;
+import me.fabriziocoder.luxanna.utils.SummonerUtils;
 import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import no.stelar7.api.r4j.basic.constants.api.regions.LeagueShard;
+import no.stelar7.api.r4j.pojo.lol.championmastery.ChampionMastery;
+import no.stelar7.api.r4j.pojo.lol.summoner.Summoner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,13 +24,18 @@ public class MasterySubCommand extends SlashCommand {
         this.help = COMMAND_DESCRIPTION;
         this.cooldown = 15;
         this.guildOnly = false;
-        this.options = List.of(new OptionData(OptionType.STRING, "name", "The name of the summoner to search for").setRequired(true), new OptionData(OptionType.STRING, "region", "The region of the account").addChoices(regionChoices()).setRequired(true));
+        this.options = List.of(new OptionData(OptionType.STRING, "summoner-name", "The name of the summoner to search for").setRequired(true), new OptionData(OptionType.STRING, "region", "The region of the account").addChoices(regionChoices()).setRequired(true));
     }
 
     private List<Command.Choice> regionChoices() {
         List<Command.Choice> options = new ArrayList<>();
-        for (Platform c : Platform.values()) {
-            options.add(new Command.Choice(c.getTag(), c.name()));
+        LeagueShard[] leagueShards = LeagueShard.values();
+        for (int i = 1; i < leagueShards.length; i++) {
+            if (i >= 12) break;
+            LeagueShard leagueShard = leagueShards[i];
+            String keyName = leagueShard.getKeys()[1];
+            if (keyName.isEmpty()) continue;
+            options.add(new Command.Choice(keyName.toUpperCase(), leagueShard.name()));
         }
         return options;
     }
@@ -50,36 +54,31 @@ public class MasterySubCommand extends SlashCommand {
     public void execute(SlashCommandEvent event) {
         event.deferReply().queue();
 
-        String summonerName = event.optString("name");
+        String summonerName = event.optString("summoner-name");
         String region = event.optString("region");
 
-        assert summonerName != null;
-        final Summoner summoner = Summoner.named(summonerName).withRegion(Region.valueOf(region)).get();
+        final Summoner summonerData = SummonerUtils.getSummonerByName(summonerName, LeagueShard.valueOf(region));
 
-        if (!summoner.exists()) {
-            event.getHook().editOriginal("That summoner couldn't be found, at least on that region.").queue();
+        if (summonerData == null) {
+            event.getHook().editOriginal("[\\❌] That summoner couldn't be found, at least on that region.").queue();
             return;
         }
 
-        final ChampionMasteries championMasteries = summoner.getChampionMasteries();
+        final List<ChampionMastery> summonerTopChampions = SummonerUtils.getSummonerTopChampionsSummonerId(summonerData.getSummonerId(), LeagueShard.valueOf(region), 15);
 
-        if (!championMasteries.exists()) {
+        if (summonerTopChampions == null) {
             event.getHook().editOriginal("This summoner has not played champions.").queue();
             return;
         }
 
         StringBuilder str = new StringBuilder();
 
-        for (int i = 0; i < 15; i++) {
-            if (i >= championMasteries.size()) {
-                break;
-            }
-
-            ChampionMastery mastery = championMasteries.get(i);
-            Champion champion = mastery.getChampion();
-            str.append(String.format("%3d) %-16s %,7d (%d)%n", i + 1, champion.getName(), mastery.getPoints(), mastery.getLevel()));
+        for (int i = 0; i < summonerTopChampions.size(); i++) {
+            ChampionMastery mastery = summonerTopChampions.get(i);
+            String champion = ChampionUtils.getChampionNameById(mastery.getChampionId());
+            str.append(String.format("%3d) %-16s %,7d (%d)%n", i + 1, champion, mastery.getChampionPoints(), mastery.getChampionLevel()));
         }
 
-        event.getHook().editOriginal(String.format("%s's Top Champs:\n```k\n%s\n```", summoner.getName(), str)).queue();
+        event.getHook().editOriginal(String.format("**%s**'s Top %s Champion%s:\n```k\n%s\n```", summonerData.getName(), summonerTopChampions.size(), summonerTopChampions.size() > 1 ? "s" : "", str)).queue();
     }
 }
