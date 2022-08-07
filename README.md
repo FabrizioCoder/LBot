@@ -1,4 +1,4 @@
-![Logo](https://cdn.discordapp.com/attachments/1003825080188543007/1005125543773089802/LUXANNA_BOT.png)
+[![Banner](https://i.imgur.com/biAW7gB.png)](https://discord.com/api/oauth2/authorize?client_id=949565943275720736&permissions=2147796992&scope=bot%20applications.commands)
 
 This is the source code for the Discord bot portions that compromise Luxanna Bot.
 
