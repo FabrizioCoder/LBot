@@ -29,9 +29,9 @@ public class HelpSubCommand extends SlashCommand {
         event.deferReply().queue();
         event.getClient().getSlashCommands().forEach(command -> {
             if (command.getName().equals("summoner") || command.getName().equals("champion")) {
-                Arrays.stream(command.getChildren()).map(SlashCommand::getName).forEach((it) -> leagueCommands.append("`").append(it).append("` "));
+                Arrays.stream(command.getChildren()).map(SlashCommand::getName).forEach((it) -> leagueCommands.append("`").append(String.format("/%s %s", command.getName(), it)).append("` "));
             } else if (command.getName().equals("core")) {
-                coreCommands.append("`").append(command.getName()).append("` ");
+                Arrays.stream(command.getChildren()).map(SlashCommand::getName).forEach((it) -> coreCommands.append("`").append(String.format("/%s %s", command.getName(), it)).append("` "));
             }
         });
 
