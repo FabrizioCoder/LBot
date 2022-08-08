@@ -28,9 +28,9 @@ public class HelpSubCommand extends SlashCommand {
         StringBuilder coreCommands = new StringBuilder();
         event.deferReply().queue();
         event.getClient().getSlashCommands().forEach(command -> {
-            if (command.getName().equals("lol")) {
+            if (command.getName().equals("summoner") || command.getName().equals("champion")) {
                 Arrays.stream(command.getChildren()).map(SlashCommand::getName).forEach((it) -> leagueCommands.append("`").append(it).append("` "));
-            } else {
+            } else if (command.getName().equals("core")) {
                 coreCommands.append("`").append(command.getName()).append("` ");
             }
         });
