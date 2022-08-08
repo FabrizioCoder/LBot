@@ -19,16 +19,16 @@ public class BotInfoSubCommand extends SlashCommand {
     @Override
     public void execute(SlashCommandEvent event) {
         event.deferReply().queue();
-        EmbedBuilder messageEmbed = new EmbedBuilder().setColor(0x2564f4).setAuthor(String.format("All about %s", event.getJDA().getSelfUser().getName()), event.getClient().getServerInvite(), null).setFooter("Last restart", null).setTimestamp(event.getClient().getStartTime()).setThumbnail(event.getJDA().getSelfUser().getAvatarUrl()).setImage("https://i.imgur.com/XTgkUlF.png");
+        EmbedBuilder messageEmbed = new EmbedBuilder().setColor(0x2564f4).setFooter("Last restart", null).setTimestamp(event.getClient().getStartTime()).setThumbnail(event.getJDA().getSelfUser().getAvatarUrl()).setImage("https://i.imgur.com/XTgkUlF.png");
 
-        String[] botStats = {String.format("`Users:` %s", event.getJDA().getUsers().size()), String.format("`Servers:` %s", event.getJDA().getGuilds().size()), String.format("`Gateway ping:` %sms", event.getJDA().getGatewayPing()), String.format("`Text channels:` %s", event.getJDA().getTextChannels().size()), String.format("`Voice channels:` %s", event.getJDA().getVoiceChannels().size())};
+        String[] botStats = {String.format("`Servers:` %,7d", event.getJDA().getGuilds().size()), String.format("`Gateway ping:` %sms", event.getJDA().getGatewayPing())};
         messageEmbed.addField("> Bot stats", String.join("\n", botStats), false);
 
         String[] librariesInfoDescription = {String.format("`JDA:` [%s](%s)", JDAInfo.VERSION, JDAInfo.GITHUB), String.format("`JDA-Utilities:` [%s](%s)", JDAUtilitiesInfo.VERSION, JDAUtilitiesInfo.GITHUB), String.format("`Orianna:` [%s](%s)", "4.0.0-rc8", "https://github.com/meraki-analytics/orianna"), String.format("`R4J:` [%s](%s)", "2.1.21", "https://github.com/stelar7/R4J")};
         messageEmbed.addField("> Libraries versions", String.join("\n", librariesInfoDescription), false);
 
         messageEmbed.addField("> Developer", event.getJDA().retrieveApplicationInfo().complete().getOwner().getAsMention(), true);
-        messageEmbed.addField("> Bot invite", String.format("[Click here](%s)", event.getClient().getServerInvite()), true);
+        messageEmbed.addField("> Links", String.format("[Support Server](%s)\n[Bot Invite](%s)", event.getClient().getServerInvite(), "https://discord.com/api/oauth2/authorize?client_id=949565943275720736&permissions=2147796992&scope=bot%20applications.commands"), true);
 
         event.getHook().sendMessageEmbeds(messageEmbed.build()).queue();
     }
