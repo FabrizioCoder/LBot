@@ -7,7 +7,7 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 
 import java.util.Arrays;
 
-public class HelpCommand extends SlashCommand {
+public class HelpSubCommand extends SlashCommand {
 
     public static final String COMMAND_NAME = "help";
     public static final String COMMAND_DESCRIPTION = "Shows help options for all commands";

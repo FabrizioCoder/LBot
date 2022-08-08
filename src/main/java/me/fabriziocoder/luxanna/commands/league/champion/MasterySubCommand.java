@@ -1,4 +1,4 @@
-package me.fabriziocoder.luxanna.commands.lol.champion;
+package me.fabriziocoder.luxanna.commands.league.champion;
 
 import com.jagrosh.jdautilities.command.SlashCommand;
 import com.jagrosh.jdautilities.command.SlashCommandEvent;

@@ -4,9 +4,9 @@ import com.jagrosh.jdautilities.command.SlashCommand;
 import com.jagrosh.jdautilities.command.SlashCommandEvent;
 import net.dv8tion.jda.api.Permission;
 
-public class PingCommand extends SlashCommand {
+public class PingSubCommand extends SlashCommand {
 
-    public PingCommand() {
+    public PingSubCommand() {
         this.name = "ping";
         this.cooldown = 5;
         this.category = new Category("Core");

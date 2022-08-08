@@ -4,12 +4,11 @@ import com.jagrosh.jdautilities.command.CommandClient;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import com.merakianalytics.orianna.Orianna;
 import com.merakianalytics.orianna.types.common.Platform;
-import me.fabriziocoder.luxanna.commands.core.HelpCommand;
-import me.fabriziocoder.luxanna.commands.core.PingCommand;
-import me.fabriziocoder.luxanna.commands.lol.LoLCommand;
+import me.fabriziocoder.luxanna.commands.core.CoreCommand;
+import me.fabriziocoder.luxanna.commands.league.champion.ChampionCommand;
+import me.fabriziocoder.luxanna.commands.league.summoner.SummonerCommand;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
-import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import no.stelar7.api.r4j.basic.APICredentials;
 import no.stelar7.api.r4j.impl.R4J;
@@ -26,9 +25,9 @@ public class Luxanna {
         properties.load(new File("classes/bot.properties").toURI().toURL().openStream());
 
 
-        CommandClientBuilder builder = new CommandClientBuilder().setOwnerId(properties.getProperty("OWNER_ID")).setCoOwnerIds(properties.getProperty("CO_OWNER_1_ID"), properties.getProperty("CO_OWNER_2_ID")).setActivity(Activity.competing("a Ranked")).setStatus(OnlineStatus.DO_NOT_DISTURB).useHelpBuilder(false);
+        CommandClientBuilder builder = new CommandClientBuilder().setOwnerId(properties.getProperty("OWNER_ID")).setCoOwnerIds(properties.getProperty("CO_OWNER_1_ID"), properties.getProperty("CO_OWNER_2_ID")).setStatus(OnlineStatus.DO_NOT_DISTURB).useHelpBuilder(false);
 
-        builder.addSlashCommands(new PingCommand(), new LoLCommand(), new HelpCommand());
+        builder.addSlashCommands(new CoreCommand(), new SummonerCommand(), new ChampionCommand());
         CommandClient commandClient = builder.build();
 
         JDABuilder.createLight(properties.getProperty("BOT_TOKEN"), GatewayIntent.GUILD_MEMBERS).addEventListeners(commandClient).build();
