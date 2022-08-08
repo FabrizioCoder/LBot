@@ -9,7 +9,7 @@ public class SummonerCommand extends SlashCommand {
         this.name = "summoner";
         this.help = "[LoL] Summoner commands";
         this.category = new Category("Summoner");
-        this.children = new SlashCommand[]{new ProfileSubCommand()};
+        this.children = new SlashCommand[]{new ProfileSubCommand(), new CurrentSubCommand()};
     }
 
     @Override

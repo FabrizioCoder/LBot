@@ -128,8 +128,8 @@ public class EmojiUtils {
             case "Rammus" -> emoji = "<:Rammus:888552883266666546>";
             case "Rek'Sai" -> emoji = "<:RekSai:888552925679484930>";
             case "Rell" -> emoji = "<:Rell:888552968956293162>";
-            case "Renata Glasc" -> emoji = "<:RenataGlasc:945153657127718932>";
-            case "RenataGlasc" -> emoji = "<:RenataGlasc:945153657127718932>";
+            case "Renata Glasc" -> emoji = "<:RenataGlasc:1006260533168717894>";
+            case "RenataGlasc" -> emoji = "<:RenataGlasc:1006260533168717894>";
             case "Renekton" -> emoji = "<:Renekton:888553011893391390>";
             case "Rengar" -> emoji = "<:Rengar:888553054423629877>";
             case "Riven" -> emoji = "<:Riven:888553348851175516>";
