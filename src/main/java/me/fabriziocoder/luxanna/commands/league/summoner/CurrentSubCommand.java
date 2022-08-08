@@ -14,6 +14,7 @@ import no.stelar7.api.r4j.basic.constants.types.lol.TeamType;
 import no.stelar7.api.r4j.pojo.lol.spectator.SpectatorGameInfo;
 import no.stelar7.api.r4j.pojo.lol.summoner.Summoner;
 
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -77,26 +78,30 @@ public class CurrentSubCommand extends SlashCommand {
 
         EmbedBuilder messageEmbed = new EmbedBuilder().setColor(0x2564f4).setThumbnail(SummonerUtils.makeProfileIconURL(String.valueOf(summonerData.getProfileIconId()))).setAuthor("Current match").setTitle(String.format("`%s` - `%s`", summonerData.getName(), summonerData.getPlatform().prettyName()));
 
-        String[] gameInformation = {String.format("`Map:` %s", summonerCurrentGame.getMap().prettyName()), String.format("`Game mode:` %s", summonerCurrentGame.getGameMode().prettyName()), String.format("`Game type:` %s", summonerCurrentGame.getGameType().prettyName()), String.format("`Game start:` %s", DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mm:ss").format(summonerCurrentGame.getGameStartAsDate())),};
+        String[] gameInformation = {String.format("`Map:` %s", summonerCurrentGame.getMap().prettyName()), String.format("`Game mode:` %s", summonerCurrentGame.getGameMode().prettyName()), String.format("`Game type:` %s", summonerCurrentGame.getGameType().prettyName()), String.format("`Queue type:` %s", summonerCurrentGame.getGameQueueConfig().prettyName()), String.format("`Game start:` %s", DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mm:ss").withZone(ZoneId.systemDefault()).format(summonerCurrentGame.getGameStartAsDate())),};
         messageEmbed.addField("> Match infomation", String.join("\n", gameInformation), false);
 
-        StringBuilder bannedChampionsByBlueTeam = new StringBuilder();
-        StringBuilder bannedChampionsByRedTeam = new StringBuilder();
+        if (!summonerCurrentGame.getBannedChampions().isEmpty()) {
+            StringBuilder bannedChampionsByBlueTeam = new StringBuilder();
+            StringBuilder bannedChampionsByRedTeam = new StringBuilder();
 
-        for (int i = 0; i < summonerCurrentGame.getBannedChampions().size(); i++) {
-            int teamId = summonerCurrentGame.getBannedChampions().get(i).getTeamId();
-            String championName = ChampionUtils.getChampionNameById(summonerCurrentGame.getBannedChampions().get(i).getChampionId());
-            switch (teamId) {
-                case 100 ->
-                        bannedChampionsByBlueTeam.append(String.format("%s %s ", EmojiUtils.getChampionEmojiByChampionName(championName), championName));
-                case 200 ->
-                        bannedChampionsByRedTeam.append(String.format("%s %s ", EmojiUtils.getChampionEmojiByChampionName(championName), championName));
+            for (int i = 0; i < summonerCurrentGame.getBannedChampions().size(); i++) {
+                if (!(summonerCurrentGame.getBannedChampions().get(i).getChampionId() == -1)) {
+                    int teamId = summonerCurrentGame.getBannedChampions().get(i).getTeamId();
+                    String championName = ChampionUtils.getChampionNameById(summonerCurrentGame.getBannedChampions().get(i).getChampionId());
+                    switch (teamId) {
+                        case 100 ->
+                                bannedChampionsByBlueTeam.append(String.format("%s %s ", EmojiUtils.getChampionEmojiByChampionName(championName), championName));
+                        case 200 ->
+                                bannedChampionsByRedTeam.append(String.format("%s %s ", EmojiUtils.getChampionEmojiByChampionName(championName), championName));
+                    }
+                }
             }
+
+            String[] bannedChampions = {String.format("`Blue team:` %s", String.join("", bannedChampionsByBlueTeam)), String.format("`Red team:` %s", String.join(", ", bannedChampionsByRedTeam)),};
+
+            messageEmbed.addField("> Banned champions", String.join("\n", bannedChampions), false);
         }
-
-        String[] bannedChampions = {String.format("`Blue team:` %s", String.join("", bannedChampionsByBlueTeam)), String.format("`Red team:` %s", String.join(", ", bannedChampionsByRedTeam)),};
-
-        messageEmbed.addField("> Banned champions", String.join("\n", bannedChampions), false);
 
         StringBuilder blueTeamParticipants = new StringBuilder();
         StringBuilder redTeamParticipants = new StringBuilder();
