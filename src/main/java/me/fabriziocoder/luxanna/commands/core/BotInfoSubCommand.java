@@ -3,10 +3,8 @@ package me.fabriziocoder.luxanna.commands.core;
 import com.jagrosh.jdautilities.command.SlashCommand;
 import com.jagrosh.jdautilities.command.SlashCommandEvent;
 import com.jagrosh.jdautilities.commons.JDAUtilitiesInfo;
-import com.merakianalytics.orianna.Orianna;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDAInfo;
-import no.stelar7.api.r4j.impl.R4J;
 
 public class BotInfoSubCommand extends SlashCommand {
 
@@ -26,7 +24,7 @@ public class BotInfoSubCommand extends SlashCommand {
         String[] botStats = {String.format("`Users:` %s", event.getJDA().getUsers().size()), String.format("`Servers:` %s", event.getJDA().getGuilds().size()), String.format("`Gateway ping:` %sms", event.getJDA().getGatewayPing()), String.format("`Text channels:` %s", event.getJDA().getTextChannels().size()), String.format("`Voice channels:` %s", event.getJDA().getVoiceChannels().size())};
         messageEmbed.addField("> Bot stats", String.join("\n", botStats), false);
 
-        String[] librariesInfoDescription = {String.format("`JDA:` [%s](%s)", JDAInfo.VERSION, JDAInfo.GITHUB), String.format("`JDA-Utilities:` [%s](%s)", JDAUtilitiesInfo.VERSION, JDAUtilitiesInfo.GITHUB), String.format("`Orianna:` [%s](%s)", Orianna.class.getPackage().getImplementationVersion(), "https://github.com/meraki-analytics/orianna"), String.format("`R4J:` [%s](%s)", R4J.class.getPackage().getImplementationVersion(), "https://github.com/stelar7/R4J")};
+        String[] librariesInfoDescription = {String.format("`JDA:` [%s](%s)", JDAInfo.VERSION, JDAInfo.GITHUB), String.format("`JDA-Utilities:` [%s](%s)", JDAUtilitiesInfo.VERSION, JDAUtilitiesInfo.GITHUB), String.format("`Orianna:` [%s](%s)", "4.0.0-rc8", "https://github.com/meraki-analytics/orianna"), String.format("`R4J:` [%s](%s)", "2.1.21", "https://github.com/stelar7/R4J")};
         messageEmbed.addField("> Libraries versions", String.join("\n", librariesInfoDescription), false);
 
         messageEmbed.addField("> Developer", event.getJDA().retrieveApplicationInfo().complete().getOwner().getAsMention(), true);
