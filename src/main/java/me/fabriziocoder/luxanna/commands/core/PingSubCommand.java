@@ -9,7 +9,6 @@ public class PingSubCommand extends SlashCommand {
     public PingSubCommand() {
         this.name = "ping";
         this.cooldown = 5;
-        this.category = new Category("Core");
         this.help = "Returns the latency of the bot";
         this.botPermissions = new Permission[]{Permission.MESSAGE_SEND};
     }

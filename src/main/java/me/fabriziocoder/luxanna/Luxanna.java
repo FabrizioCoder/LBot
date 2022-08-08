@@ -26,7 +26,7 @@ public class Luxanna {
         properties.load(new File("classes/bot.properties").toURI().toURL().openStream());
 
 
-        CommandClientBuilder builder = new CommandClientBuilder().setOwnerId(properties.getProperty("OWNER_ID")).setCoOwnerIds(properties.getProperty("CO_OWNER_1_ID"), properties.getProperty("CO_OWNER_2_ID")).setStatus(OnlineStatus.DO_NOT_DISTURB).useHelpBuilder(false);
+        CommandClientBuilder builder = new CommandClientBuilder().setOwnerId(properties.getProperty("OWNER_ID")).setCoOwnerIds(properties.getProperty("CO_OWNER_1_ID"), properties.getProperty("CO_OWNER_2_ID")).setStatus(OnlineStatus.DO_NOT_DISTURB).useHelpBuilder(false).setServerInvite(properties.getProperty("SERVER_INVITE")).setActivity(null);
 
         builder.addSlashCommands(new HelpCommand(), new CoreCommand(), new SummonerCommand(), new ChampionCommand());
         CommandClient commandClient = builder.build();
