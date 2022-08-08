@@ -19,7 +19,7 @@ public class BotInfoSubCommand extends SlashCommand {
     @Override
     public void execute(SlashCommandEvent event) {
         event.deferReply().queue();
-        EmbedBuilder messageEmbed = new EmbedBuilder().setColor(0x2564f4).setFooter("Last restart", null).setTimestamp(event.getClient().getStartTime()).setThumbnail(event.getJDA().getSelfUser().getAvatarUrl()).setImage("https://i.imgur.com/XTgkUlF.png");
+        EmbedBuilder messageEmbed = new EmbedBuilder().setTitle(String.format("%s - your League of Legends bot", event.getJDA().getSelfUser().getName())).setColor(0x2564f4).setFooter("Last restart", null).setTimestamp(event.getClient().getStartTime()).setThumbnail(event.getJDA().getSelfUser().getAvatarUrl()).setImage("https://i.imgur.com/XTgkUlF.png");
 
         String[] botStats = {String.format("`Servers:` %,7d", event.getJDA().getGuilds().size()), String.format("`Gateway ping:` %sms", event.getJDA().getGatewayPing())};
         messageEmbed.addField("> Bot stats", String.join("\n", botStats), false);
