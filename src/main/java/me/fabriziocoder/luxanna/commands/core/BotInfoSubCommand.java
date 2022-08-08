@@ -19,7 +19,7 @@ public class BotInfoSubCommand extends SlashCommand {
     @Override
     public void execute(SlashCommandEvent event) {
         event.deferReply().queue();
-        EmbedBuilder messageEmbed = new EmbedBuilder().setColor(0x2564f4).setAuthor(String.format("All about %s", event.getJDA().getSelfUser().getName()), event.getClient().getServerInvite(), null).setFooter("Last restart", null).setTimestamp(event.getClient().getStartTime()).setThumbnail(event.getJDA().getSelfUser().getAvatarUrl());
+        EmbedBuilder messageEmbed = new EmbedBuilder().setColor(0x2564f4).setAuthor(String.format("All about %s", event.getJDA().getSelfUser().getName()), event.getClient().getServerInvite(), null).setFooter("Last restart", null).setTimestamp(event.getClient().getStartTime()).setThumbnail(event.getJDA().getSelfUser().getAvatarUrl()).setImage("https://i.imgur.com/XTgkUlF.png");
 
         String[] botStats = {String.format("`Users:` %s", event.getJDA().getUsers().size()), String.format("`Servers:` %s", event.getJDA().getGuilds().size()), String.format("`Gateway ping:` %sms", event.getJDA().getGatewayPing()), String.format("`Text channels:` %s", event.getJDA().getTextChannels().size()), String.format("`Voice channels:` %s", event.getJDA().getVoiceChannels().size())};
         messageEmbed.addField("> Bot stats", String.join("\n", botStats), false);
