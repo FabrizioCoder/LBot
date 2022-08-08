@@ -24,9 +24,9 @@ public class HelpSubCommand extends SlashCommand {
 
     @Override
     public void execute(SlashCommandEvent event) {
+        event.deferReply().queue();
         StringBuilder leagueCommands = new StringBuilder();
         StringBuilder coreCommands = new StringBuilder();
-        event.deferReply().queue();
         event.getClient().getSlashCommands().forEach(command -> {
             if (command.getName().equals("summoner") || command.getName().equals("champion")) {
                 Arrays.stream(command.getChildren()).map(SlashCommand::getName).forEach((it) -> leagueCommands.append("`").append(String.format("/%s %s", command.getName(), it)).append("` "));
