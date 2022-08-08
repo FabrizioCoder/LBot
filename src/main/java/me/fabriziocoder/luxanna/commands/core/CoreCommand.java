@@ -9,7 +9,7 @@ public class CoreCommand extends SlashCommand {
         this.name = "core";
         this.help = "Core commands";
         this.category = new Category("Core");
-        this.children = new SlashCommand[]{new HelpSubCommand(), new PingSubCommand()};
+        this.children = new SlashCommand[]{new PingSubCommand()};
     }
 
     @Override

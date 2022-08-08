@@ -7,7 +7,7 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 
 import java.util.Arrays;
 
-public class HelpSubCommand extends SlashCommand {
+public class HelpCommand extends SlashCommand {
 
     public static final String COMMAND_NAME = "help";
     public static final String COMMAND_DESCRIPTION = "Shows help options for all commands";
@@ -32,6 +32,8 @@ public class HelpSubCommand extends SlashCommand {
                 Arrays.stream(command.getChildren()).map(SlashCommand::getName).forEach((it) -> leagueCommands.append("`").append(String.format("/%s %s", command.getName(), it)).append("` "));
             } else if (command.getName().equals("core")) {
                 Arrays.stream(command.getChildren()).map(SlashCommand::getName).forEach((it) -> coreCommands.append("`").append(String.format("/%s %s", command.getName(), it)).append("` "));
+            } else {
+                coreCommands.append("`").append(String.format("/%s", command.getName())).append("` ");
             }
         });
 

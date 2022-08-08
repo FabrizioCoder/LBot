@@ -5,6 +5,7 @@ import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import com.merakianalytics.orianna.Orianna;
 import com.merakianalytics.orianna.types.common.Platform;
 import me.fabriziocoder.luxanna.commands.core.CoreCommand;
+import me.fabriziocoder.luxanna.commands.core.HelpCommand;
 import me.fabriziocoder.luxanna.commands.league.champion.ChampionCommand;
 import me.fabriziocoder.luxanna.commands.league.summoner.SummonerCommand;
 import net.dv8tion.jda.api.JDABuilder;
@@ -27,7 +28,7 @@ public class Luxanna {
 
         CommandClientBuilder builder = new CommandClientBuilder().setOwnerId(properties.getProperty("OWNER_ID")).setCoOwnerIds(properties.getProperty("CO_OWNER_1_ID"), properties.getProperty("CO_OWNER_2_ID")).setStatus(OnlineStatus.DO_NOT_DISTURB).useHelpBuilder(false);
 
-        builder.addSlashCommands(new CoreCommand(), new SummonerCommand(), new ChampionCommand());
+        builder.addSlashCommands(new HelpCommand(), new CoreCommand(), new SummonerCommand(), new ChampionCommand());
         CommandClient commandClient = builder.build();
 
         JDABuilder.createLight(properties.getProperty("BOT_TOKEN"), GatewayIntent.GUILD_MEMBERS).addEventListeners(commandClient).build();
