@@ -15,7 +15,6 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import no.stelar7.api.r4j.impl.lol.raw.DDragonAPI;
 import no.stelar7.api.r4j.pojo.lol.staticdata.champion.StaticChampion;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -36,19 +35,10 @@ public class SkinsSubCommand extends SlashCommand {
     @Override
     public void onAutoComplete(CommandAutoCompleteInteractionEvent event) {
         Map<Integer, StaticChampion> allChampions = DDragonAPI.getInstance().getChampions();
-        List<Command.Choice> choiceList = new ArrayList<>();
         if (event.getFocusedOption().getName().equals("champion")) {
-            for (StaticChampion champion : allChampions.values()) {
-                if (champion.getName().toLowerCase().contains(event.getFocusedOption().getValue())) {
-                    choiceList.add(new Command.Choice(champion.getName(), champion.getId()));
-                }
-            }
-            if (choiceList.size() > 15) {
-                choiceList = choiceList.subList(0, 15);
-                event.replyChoices(choiceList).queue();
-            } else {
-                event.replyChoices(choiceList).queue();
-            }
+            List<Command.Choice> choiceList;
+            choiceList = allChampions.values().stream().filter(champion -> champion.getName().toLowerCase().startsWith(event.getFocusedOption().getValue().toLowerCase())).map(championData -> new Command.Choice(championData.getName(), championData.getId())).limit(15).toList();
+            event.replyChoices(choiceList).queue();
         }
     }
 
@@ -74,9 +64,9 @@ public class SkinsSubCommand extends SlashCommand {
 
         SearchableList<com.merakianalytics.orianna.types.core.staticdata.Skin> championSkins = championData.getSkins();
         StringBuilder skinsText = new StringBuilder();
-        for (int i = 0; i < championSkins.size(); i++) {
+        for (int i = 1; i < championSkins.size(); i++) {
             Skin skin = championSkins.get(i);
-            skinsText.append(String.format("`%s.` [%s](%s)\n", i + 1, skin.getName(), skin.getSplashImageURL()));
+            skinsText.append(String.format("`%s.` [%s](%s)\n", (i - 1) + 1, skin.getName(), skin.getSplashImageURL()));
         }
 
         MessageEmbed messageEmbed = new EmbedBuilder().setColor(0x2564f4).setTitle(String.format("Skins for `%s`", championData.getName())).setThumbnail(championData.getImage().getURL()).setDescription(skinsText.toString()).build();
