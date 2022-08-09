@@ -14,6 +14,7 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import no.stelar7.api.r4j.basic.APICredentials;
 import no.stelar7.api.r4j.impl.R4J;
+import no.stelar7.api.r4j.impl.lol.raw.DDragonAPI;
 
 import javax.security.auth.login.LoginException;
 import java.io.File;
@@ -38,6 +39,7 @@ public class Luxanna {
         Orianna.setRiotAPIKey(properties.getProperty("RIOT_API_KEY"));
         Orianna.setDefaultLocale(properties.getProperty("DEFAULT_LOCALE"));
         new R4J(new APICredentials(properties.getProperty("RIOT_API_KEY")));
+        DDragonAPI.getInstance().getChampions();
     }
 
 }

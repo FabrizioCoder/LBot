@@ -9,7 +9,7 @@ public class ChampionCommand extends SlashCommand {
         this.name = "champion";
         this.help = "[LoL] Champion commands";
         this.category = new Category("Champion");
-        this.children = new SlashCommand[]{new MasterySubCommand(), new RotationSubCommand()};
+        this.children = new SlashCommand[]{new MasterySubCommand(), new RotationSubCommand(), new SkinsSubCommand()};
     }
 
     @Override
