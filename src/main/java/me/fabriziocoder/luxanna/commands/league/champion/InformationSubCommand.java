@@ -2,12 +2,10 @@ package me.fabriziocoder.luxanna.commands.league.champion;
 
 import com.jagrosh.jdautilities.command.SlashCommand;
 import com.jagrosh.jdautilities.command.SlashCommandEvent;
-import com.merakianalytics.orianna.types.core.searchable.SearchableList;
+import com.merakianalytics.orianna.Orianna;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
-import com.merakianalytics.orianna.types.core.staticdata.Skin;
 import me.fabriziocoder.luxanna.utils.EmojiUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -19,16 +17,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class SkinsSubCommand extends SlashCommand {
+public class InformationSubCommand extends SlashCommand {
+    static final String COMMAND_NAME = "information";
+    static final String COMMAND_DESCRIPTION = "Get information about a champion";
 
-    public static final String COMMAND_NAME = "skins";
-    public static final String COMMAND_DESCRIPTION = "Displays the champion skins";
-
-    public SkinsSubCommand() {
+    public InformationSubCommand() {
         this.name = COMMAND_NAME;
         this.help = COMMAND_DESCRIPTION;
         this.guildOnly = false;
-        this.cooldown = 20;
+        this.cooldown = 10;
         this.options = List.of(new OptionData(OptionType.STRING, "champion", "Champion's name", true).setAutoComplete(true));
     }
 
@@ -56,21 +53,17 @@ public class SkinsSubCommand extends SlashCommand {
     public void execute(SlashCommandEvent event) {
         event.deferReply().queue();
         int championId = Integer.parseInt(Objects.requireNonNull(event.optString("champion")));
-        Champion championData = Champion.withId(championId).get();
-        if (championData == null) {
+        final Champion championData = Orianna.championWithId(championId).get();
+        if (!championData.exists()) {
             event.getHook().editOriginal(String.format("%s This champion doesn't exist, or you misspelled it.", EmojiUtils.Discord.X)).queue();
             return;
         }
 
-        SearchableList<com.merakianalytics.orianna.types.core.staticdata.Skin> championSkins = championData.getSkins();
-        StringBuilder skinsText = new StringBuilder();
-        for (int i = 1; i < championSkins.size(); i++) {
-            Skin skin = championSkins.get(i);
-            skinsText.append(String.format("`%s.` [%s](%s)\n", (i - 1) + 1, skin.getName(), skin.getSplashImageURL()));
-        }
+        EmbedBuilder messageEmbed = new EmbedBuilder().setColor(0x2564f4).setThumbnail(championData.getImage().getURL()).setTitle(String.format("`%s`, `%s`", championData.getName(), championData.getTitle())).setDescription(championData.getLore());
 
-        MessageEmbed messageEmbed = new EmbedBuilder().setColor(0x2564f4).setTitle(String.format("Skins for `%s`", championData.getName())).setThumbnail(championData.getImage().getURL()).setDescription(skinsText.toString()).build();
+        messageEmbed.addField("> Ally tips", championData.getAllyTips().toString().replace("[", "").replace("]", ""), true);
+        messageEmbed.addField("> Enemy tips", championData.getEnemyTips().toString().replace("[", "").replace("]", ""), true);
 
-        event.getHook().sendMessageEmbeds(messageEmbed).queue();
+        event.getHook().sendMessageEmbeds(messageEmbed.build()).queue();
     }
 }

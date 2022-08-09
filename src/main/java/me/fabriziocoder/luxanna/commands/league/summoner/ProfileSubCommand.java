@@ -159,9 +159,6 @@ public class ProfileSubCommand extends SlashCommand {
             messageEmbed.addField(String.format("> Recent %s Matches", summonerRecentThreeMatches.size()), summonerRecentMatchesText.toString(), false);
         }
 
-        // Last Match for the Summoner
-        messageEmbed.addField("> Last Match", String.format("Use: `/summoner lastmatch summoner-name:%s region:%s`", summonerData.getName(), LeagueShard.valueOf(region).getKeys()[1].toUpperCase()), false);
-
         event.getHook().sendMessageEmbeds(messageEmbed.build()).queue();
 
     }
