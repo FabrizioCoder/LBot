@@ -196,4 +196,19 @@ public class EmojiUtils {
         }
         return emoji;
     }
+
+    public enum Discord {
+        CHECK("<:check_mark:1006378529916719134>"), X("<:x_:1006378538196279386>");
+
+        private final String text;
+
+        Discord(final String text) {
+            this.text = text;
+        }
+
+        @Override
+        public String toString() {
+            return text;
+        }
+    }
 }

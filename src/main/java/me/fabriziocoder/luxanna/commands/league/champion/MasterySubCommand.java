@@ -3,6 +3,7 @@ package me.fabriziocoder.luxanna.commands.league.champion;
 import com.jagrosh.jdautilities.command.SlashCommand;
 import com.jagrosh.jdautilities.command.SlashCommandEvent;
 import me.fabriziocoder.luxanna.utils.ChampionUtils;
+import me.fabriziocoder.luxanna.utils.EmojiUtils;
 import me.fabriziocoder.luxanna.utils.SummonerUtils;
 import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -60,7 +61,7 @@ public class MasterySubCommand extends SlashCommand {
         final Summoner summonerData = SummonerUtils.getSummonerByName(summonerName, LeagueShard.valueOf(region));
 
         if (summonerData == null) {
-            event.getHook().editOriginal("[\\❌] That summoner couldn't be found, at least on that region.").queue();
+            event.getHook().editOriginal(String.format("%s That summoner couldn't be found, at least on that region.", EmojiUtils.Discord.X)).queue();
             return;
         }
 

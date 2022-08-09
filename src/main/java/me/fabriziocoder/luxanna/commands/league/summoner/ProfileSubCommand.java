@@ -94,7 +94,7 @@ public class ProfileSubCommand extends SlashCommand {
 
 
         if (summonerData == null) {
-            event.getHook().editOriginal("[\\❌] That summoner couldn't be found, at least on that region.").queue();
+            event.getHook().editOriginal(String.format("%s That summoner couldn't be found, at least on that region.", EmojiUtils.Discord.X)).queue();
             return;
         }
 
@@ -102,7 +102,6 @@ public class ProfileSubCommand extends SlashCommand {
         final List<ChampionMastery> summonerTopChampions = SummonerUtils.getSummonerTopChampionsSummonerId(summonerData.getSummonerId(), LeagueShard.valueOf(region), 3);
         final List<LeagueEntry> summonerLeagueEntries = SummonerUtils.getSummonerLeagueEntryBySummonerId(summonerData.getSummonerId(), LeagueShard.valueOf(region));
         final List<MatchParticipant> summonerRecentThreeMatches = MatchUtils.getSummonerThreeRecentGames(summonerData);
-        final MatchParticipant summonerLastMatch = MatchUtils.getSummonerLastMatchBySummoner(summonerData);
 
 
         // Make embedBuilder
@@ -161,12 +160,7 @@ public class ProfileSubCommand extends SlashCommand {
         }
 
         // Last Match for the Summoner
-        if (summonerLastMatch == null) {
-            messageEmbed.addField("> Last Match", "This summoner has not played any matches", false);
-        } else {
-            messageEmbed.addField("> Last Match", String.join("\n", String.format("%s with **%s** %s, **%s**/**%s**/**%s** **%s CS**", summonerLastMatch.didWin() ? ":white_check_mark: **Victory**" : ":x: **Defeat**", summonerLastMatch.getChampionName(), EmojiUtils.getChampionEmojiByChampionName(summonerLastMatch.getChampionName()), summonerLastMatch.getKills(), summonerLastMatch.getDeaths(), summonerLastMatch.getAssists(), (summonerLastMatch.getTotalMinionsKilled() + summonerLastMatch.getNeutralMinionsKilled()))), false);
-        }
-
+        messageEmbed.addField("> Last Match", String.format("Use: `/summoner lastmatch summoner-name:%s region:%s`", summonerData.getName(), LeagueShard.valueOf(region).getKeys()[1].toUpperCase()), false);
 
         event.getHook().sendMessageEmbeds(messageEmbed.build()).queue();
 

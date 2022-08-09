@@ -64,7 +64,7 @@ public class CurrentSubCommand extends SlashCommand {
 
 
         if (summonerData == null) {
-            event.getHook().editOriginal("[\\❌] That summoner couldn't be found, at least on that region.").queue();
+            event.getHook().editOriginal(String.format("%s That summoner couldn't be found, at least on that region.", EmojiUtils.Discord.X)).queue();
             return;
         }
 
@@ -107,11 +107,12 @@ public class CurrentSubCommand extends SlashCommand {
         for (int i = 0; i < summonerCurrentGame.getParticipants().size(); i++) {
             TeamType teamType = summonerCurrentGame.getParticipants().get(i).getTeam();
             String championName = ChampionUtils.getChampionNameById(summonerCurrentGame.getParticipants().get(i).getChampionId());
+            boolean isThisSummoner = summonerCurrentGame.getParticipants().get(i).getSummonerId().equals(summonerData.getSummonerId());
             switch (teamType) {
                 case BLUE ->
-                        blueTeamParticipants.append(String.format("%s%s | %s\n", summonerCurrentGame.getParticipants().get(i).getSummonerId().equals(summonerData.getSummonerId()) ? "- " : "", EmojiUtils.getChampionEmojiByChampionName(championName), championName));
+                        blueTeamParticipants.append(String.format("%s | %s%s%s\n", EmojiUtils.getChampionEmojiByChampionName(championName), isThisSummoner ? "__**" : "", championName, isThisSummoner ? "**__" : ""));
                 case RED ->
-                        redTeamParticipants.append(String.format("%s%s | %s\n", summonerCurrentGame.getParticipants().get(i).getSummonerId().equals(summonerData.getSummonerId()) ? "- " : "", EmojiUtils.getChampionEmojiByChampionName(championName), championName));
+                        redTeamParticipants.append(String.format("%s | %s%s%s\n", EmojiUtils.getChampionEmojiByChampionName(championName), isThisSummoner ? "__**" : "", championName, isThisSummoner ? "**__" : ""));
             }
         }
 
