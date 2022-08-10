@@ -77,7 +77,7 @@ public class LastMatchSubCommand extends SlashCommand {
 
         LOLMatch summonerLastMatch = new MatchBuilder(summonerData.getPlatform()).withId(matchId).getMatch();
 
-        EmbedBuilder messageEmbed = new EmbedBuilder().setColor(0x2564f4).setAuthor("Last match").setThumbnail(SummonerUtils.makeProfileIconURL(String.valueOf(summonerData.getProfileIconId())));
+        EmbedBuilder messageEmbed = new EmbedBuilder().setAuthor("Last match").setThumbnail(SummonerUtils.makeProfileIconURL(String.valueOf(summonerData.getProfileIconId())));
 
         String[] matchInformation = {String.format("`Map:` %s", summonerLastMatch.getMap().prettyName()), String.format("`Queue type:` %s", summonerLastMatch.getQueue().prettyName()), String.format("`Game start:` <t:%s:R>", summonerLastMatch.getGameStartTimestamp() / 1000), String.format("`Game end:` <t:%s:R>", summonerLastMatch.getGameEndTimestamp() / 1000)};
         messageEmbed.addField("> Match information", String.join("\n", matchInformation), false);
@@ -138,9 +138,7 @@ public class LastMatchSubCommand extends SlashCommand {
             }
         }
 
-        messageEmbed.setTitle(String.format("`%s` - `%s` - `%s`", summonerData.getName(), summonerData.getPlatform().prettyName(), didWin ? "Victory" : "Defeat"));
-        messageEmbed.addField("> Blue team", String.join("", blueTeamParticipants), true);
-        messageEmbed.addField("> Red team", String.join("", redTeamParticipants), true);
+        messageEmbed.setTitle(String.format("`%s` - `%s` - `%s`", summonerData.getName(), summonerData.getPlatform().prettyName(), didWin ? "Victory" : "Defeat")).addField("> Blue team", String.join("", blueTeamParticipants), true).addField("> Red team", String.join("", redTeamParticipants), true).setColor(didWin ? 0x2564f4 : 0xff2424);
 
         event.getHook().sendMessageEmbeds(messageEmbed.build()).queue();
 
