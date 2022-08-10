@@ -66,7 +66,7 @@ public class SkinsSubCommand extends SlashCommand {
         StringBuilder skinsText = new StringBuilder();
         for (int i = 1; i < championSkins.size(); i++) {
             Skin skin = championSkins.get(i);
-            skinsText.append(String.format("`%s.` [%s](%s)\n", (i - 1) + 1, skin.getName(), skin.getSplashImageURL()));
+            skinsText.append(String.format("`%3d.` [%s](%s)\n", (i - 1) + 1, skin.getName(), skin.getSplashImageURL()));
         }
 
         MessageEmbed messageEmbed = new EmbedBuilder().setColor(0x2564f4).setTitle(String.format("Skins for `%s`", championData.getName())).setThumbnail(championData.getImage().getURL()).setDescription(skinsText.toString()).build();

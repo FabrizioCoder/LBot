@@ -119,7 +119,7 @@ public class ProfileSubCommand extends SlashCommand {
             for (int i = 0; i < summonerTopChampions.size(); i++) {
                 ChampionMastery championMastery = summonerTopChampions.get(i);
                 String championName = ChampionUtils.getChampionNameById(championMastery.getChampionId());
-                summonerTopChampionsText.append(String.format("`%s.` %s %s (Level %s, **%s**)\n", i + 1, EmojiUtils.getChampionEmojiByChampionName(championName), championName, championMastery.getChampionLevel(), humanReadableInt(championMastery.getChampionPoints())));
+                summonerTopChampionsText.append(String.format("`%3d.` %s %s (Level %s, **%s**)\n", i + 1, EmojiUtils.getChampionEmojiByChampionName(championName), championName, championMastery.getChampionLevel(), humanReadableInt(championMastery.getChampionPoints())));
             }
             messageEmbed.addField(String.format("> Top %s Champions", summonerTopChampions.size()), summonerTopChampionsText.toString(), true);
         }
@@ -162,7 +162,7 @@ public class ProfileSubCommand extends SlashCommand {
 
                 for (final MatchParticipant matchParticipant : matchData.getParticipants()) {
                     if (matchParticipant.getSummonerId().equals(summonerData.getSummonerId())) {
-                        summonerRecentMatchesText.append(String.format("`%s.` %s %s %s (<t:%s:R>)\n", i + 1, matchParticipant.didWin() ? EmojiUtils.Discord.CHECK : EmojiUtils.Discord.X, EmojiUtils.getChampionEmojiByChampionName(matchParticipant.getChampionName()), ChampionUtils.normalizeChampionName(matchParticipant.getChampionName()), (matchData.getGameStartTimestamp() / 1000) + matchParticipant.getTimePlayed()));
+                        summonerRecentMatchesText.append(String.format("`%3d.` %s %s %s (<t:%s:R>)\n", i + 1, matchParticipant.didWin() ? EmojiUtils.Discord.CHECK : EmojiUtils.Discord.X, EmojiUtils.getChampionEmojiByChampionName(matchParticipant.getChampionName()), ChampionUtils.normalizeChampionName(matchParticipant.getChampionName()), (matchData.getGameStartTimestamp() / 1000) + matchParticipant.getTimePlayed()));
                     }
                 }
             }

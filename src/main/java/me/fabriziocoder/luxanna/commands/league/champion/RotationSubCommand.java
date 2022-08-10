@@ -59,7 +59,7 @@ public class RotationSubCommand extends SlashCommand {
         StringBuilder freeChampionsToPLayText = new StringBuilder();
         for (int i = 0; i < freeChampions.size(); i++) {
             StaticChampion freeChampion = freeChampions.get(i);
-            freeChampionsToPLayText.append(String.format("`%s.` %s %s\n", i + 1, EmojiUtils.getChampionEmojiByChampionName(freeChampion.getName()), freeChampion.getName()));
+            freeChampionsToPLayText.append(String.format("`%3d.` %s %s\n", i + 1, EmojiUtils.getChampionEmojiByChampionName(freeChampion.getName()), freeChampion.getName()));
         }
         MessageEmbed messageEmbed = new EmbedBuilder().setColor(0x2564f4).setThumbnail(event.getJDA().getSelfUser().getAvatarUrl()).setTitle(String.format("Free champions rotation to play in `%s`", LeagueShard.valueOf(event.optString("region")).prettyName())).setDescription(freeChampionsToPLayText.toString()).build();
 
