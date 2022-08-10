@@ -5,6 +5,8 @@ import com.jagrosh.jdautilities.command.SlashCommandEvent;
 import me.fabriziocoder.luxanna.utils.ChampionUtils;
 import me.fabriziocoder.luxanna.utils.EmojiUtils;
 import me.fabriziocoder.luxanna.utils.SummonerUtils;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
@@ -76,10 +78,10 @@ public class MasterySubCommand extends SlashCommand {
 
         for (int i = 0; i < summonerTopChampions.size(); i++) {
             ChampionMastery mastery = summonerTopChampions.get(i);
-            String champion = ChampionUtils.getChampionNameById(mastery.getChampionId());
-            str.append(String.format("%3d) %-16s %,7d (%d)%n", i + 1, champion, mastery.getChampionPoints(), mastery.getChampionLevel()));
+            String championName = ChampionUtils.getChampionNameById(mastery.getChampionId());
+            str.append(String.format("`%3d.` %s %s: **%,7d** (Level **%d**)%n", i + 1, EmojiUtils.getChampionEmojiByChampionName(championName), championName, mastery.getChampionPoints(), mastery.getChampionLevel()));
         }
-
-        event.getHook().editOriginal(String.format("**%s**'s Top %s Champion%s:\n```k\n%s\n```", summonerData.getName(), summonerTopChampions.size(), summonerTopChampions.size() > 1 ? "s" : "", str)).queue();
+        MessageEmbed messageEmbed = new EmbedBuilder().setColor(0x2564f4).setAuthor(String.format("Top %s Champion%s", summonerTopChampions.size(), summonerTopChampions.size() == 1 ? "" : "s")).setTitle(String.format("`%s` - `%s`", summonerData.getName(), summonerData.getPlatform().prettyName())).setThumbnail(SummonerUtils.makeProfileIconURL(String.valueOf(summonerData.getProfileIconId()))).setDescription(str.toString()).build();
+        event.getHook().sendMessageEmbeds(messageEmbed).queue();
     }
 }
