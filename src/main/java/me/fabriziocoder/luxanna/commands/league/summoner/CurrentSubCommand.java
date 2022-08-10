@@ -70,7 +70,7 @@ public class CurrentSubCommand extends SlashCommand {
 
         SpectatorGameInfo summonerCurrentGame = summonerData.getCurrentGame();
         if (summonerCurrentGame == null) {
-            event.getHook().editOriginal("[\\❌] That summoner is not currently in a game.").queue();
+            event.getHook().editOriginal(String.format("%s That summoner is not currently in a game.", EmojiUtils.Discord.X)).queue();
             return;
         }
 

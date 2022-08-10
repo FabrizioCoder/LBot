@@ -4,7 +4,6 @@ import com.jagrosh.jdautilities.command.SlashCommand;
 import com.jagrosh.jdautilities.command.SlashCommandEvent;
 import me.fabriziocoder.luxanna.utils.ChampionUtils;
 import me.fabriziocoder.luxanna.utils.EmojiUtils;
-import me.fabriziocoder.luxanna.utils.MatchUtils;
 import me.fabriziocoder.luxanna.utils.SummonerUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.interactions.commands.Command;
@@ -12,8 +11,10 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import no.stelar7.api.r4j.basic.constants.api.regions.LeagueShard;
 import no.stelar7.api.r4j.basic.constants.types.lol.GameQueueType;
+import no.stelar7.api.r4j.impl.lol.builders.matchv5.match.MatchBuilder;
 import no.stelar7.api.r4j.pojo.lol.championmastery.ChampionMastery;
 import no.stelar7.api.r4j.pojo.lol.league.LeagueEntry;
+import no.stelar7.api.r4j.pojo.lol.match.v5.LOLMatch;
 import no.stelar7.api.r4j.pojo.lol.match.v5.MatchParticipant;
 import no.stelar7.api.r4j.pojo.lol.summoner.Summoner;
 
@@ -101,7 +102,7 @@ public class ProfileSubCommand extends SlashCommand {
 
         final List<ChampionMastery> summonerTopChampions = SummonerUtils.getSummonerTopChampionsSummonerId(summonerData.getSummonerId(), LeagueShard.valueOf(region), 3);
         final List<LeagueEntry> summonerLeagueEntries = SummonerUtils.getSummonerLeagueEntryBySummonerId(summonerData.getSummonerId(), LeagueShard.valueOf(region));
-        final List<MatchParticipant> summonerRecentThreeMatches = MatchUtils.getSummonerThreeRecentGames(summonerData);
+//        final List<MatchParticipant> summonerRecentThreeMatches = MatchUtils.getSummonerThreeRecentGames(summonerData);
 
 
         // Make embedBuilder
@@ -148,15 +149,24 @@ public class ProfileSubCommand extends SlashCommand {
         }
 
         // Recent Matches for the Summoner
-        if (summonerRecentThreeMatches == null) {
+        List<String> recentGamesId = summonerData.getLeagueGames().get();
+        if (recentGamesId.size() == 0) {
             messageEmbed.addField("> Recent Matches", "This summoner has not played any matches", false);
         } else {
             StringBuilder summonerRecentMatchesText = new StringBuilder();
-            for (int i = 0; i < summonerRecentThreeMatches.size(); i++) {
-                MatchParticipant matchParticipant = summonerRecentThreeMatches.get(i);
-                summonerRecentMatchesText.append(String.format("`%s.` %s %s %s\n", i + 1, EmojiUtils.getChampionEmojiByChampionName(matchParticipant.getChampionName()), matchParticipant.didWin() ? ":white_check_mark:" : ":x:", matchParticipant.getChampionName()));
+            MatchBuilder matchBuilder = new MatchBuilder(summonerData.getPlatform());
+
+            for (int i = 0; i < recentGamesId.size(); i++) {
+                if (i >= 3) break;
+                LOLMatch matchData = matchBuilder.withId(recentGamesId.get(i)).getMatch();
+
+                for (final MatchParticipant matchParticipant : matchData.getParticipants()) {
+                    if (matchParticipant.getSummonerId().equals(summonerData.getSummonerId())) {
+                        summonerRecentMatchesText.append(String.format("`%s.` %s %s %s (<t:%s:R>)\n", i + 1, matchParticipant.didWin() ? EmojiUtils.Discord.CHECK : EmojiUtils.Discord.X, EmojiUtils.getChampionEmojiByChampionName(matchParticipant.getChampionName()), ChampionUtils.normalizeChampionName(matchParticipant.getChampionName()), (matchData.getGameStartTimestamp() / 1000) + matchParticipant.getTimePlayed()));
+                    }
+                }
             }
-            messageEmbed.addField(String.format("> Recent %s Matches", summonerRecentThreeMatches.size()), summonerRecentMatchesText.toString(), false);
+            messageEmbed.addField("> Recent Matches", summonerRecentMatchesText.toString(), false);
         }
 
         event.getHook().sendMessageEmbeds(messageEmbed.build()).queue();
