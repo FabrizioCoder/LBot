@@ -14,6 +14,7 @@ import no.stelar7.api.r4j.basic.constants.api.regions.LeagueShard;
 import no.stelar7.api.r4j.pojo.lol.championmastery.ChampionMastery;
 import no.stelar7.api.r4j.pojo.lol.summoner.Summoner;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class MasterySubCommand extends SlashCommand {
 
     public static final String COMMAND_NAME = "mastery";
     public static final String COMMAND_DESCRIPTION = "Shows the best summoner champions";
+    private static final DecimalFormat oneDecimal = new DecimalFormat("0.0");
 
     public MasterySubCommand() {
         this.name = COMMAND_NAME;
@@ -28,6 +30,25 @@ public class MasterySubCommand extends SlashCommand {
         this.cooldown = 15;
         this.guildOnly = false;
         this.options = List.of(new OptionData(OptionType.STRING, "summoner-name", "The name of the summoner to search for").setRequired(true), new OptionData(OptionType.STRING, "region", "The region of the account").addChoices(regionChoices()).setRequired(true));
+    }
+
+    public static String humanReadableInt(long number) {
+        long absNumber = Math.abs(number);
+        double result;
+        String suffix = "";
+        if (absNumber < 1024) {
+            result = number;
+        } else if (absNumber < 1024 * 1024) {
+            result = number / 1024.0;
+            suffix = "K";
+        } else if (absNumber < 1024 * 1024 * 1024) {
+            result = number / (1024.0 * 1024);
+            suffix = "M";
+        } else {
+            result = number / (1024.0 * 1024 * 1024);
+            suffix = "B";
+        }
+        return oneDecimal.format(result) + suffix;
     }
 
     private List<Command.Choice> regionChoices() {
@@ -79,7 +100,7 @@ public class MasterySubCommand extends SlashCommand {
         for (int i = 0; i < summonerTopChampions.size(); i++) {
             ChampionMastery mastery = summonerTopChampions.get(i);
             String championName = ChampionUtils.getChampionNameById(mastery.getChampionId());
-            str.append(String.format("`%3d.` %s %s: **%,7d** (Level **%d**)%n", i + 1, EmojiUtils.getChampionEmojiByChampionName(championName), championName, mastery.getChampionPoints(), mastery.getChampionLevel()));
+            str.append(String.format("`%3d.` [`%5s`] [`%d`] %s %s%n", i + 1, humanReadableInt(mastery.getChampionPoints()), mastery.getChampionLevel(), EmojiUtils.getChampionEmojiByChampionName(championName), championName));
         }
         MessageEmbed messageEmbed = new EmbedBuilder().setColor(0x2564f4).setAuthor(String.format("Top %s Champion%s", summonerTopChampions.size(), summonerTopChampions.size() == 1 ? "" : "s")).setTitle(String.format("`%s` - `%s`", summonerData.getName(), summonerData.getPlatform().prettyName())).setThumbnail(SummonerUtils.makeProfileIconURL(String.valueOf(summonerData.getProfileIconId()))).setDescription(str.toString()).build();
         event.getHook().sendMessageEmbeds(messageEmbed).queue();
