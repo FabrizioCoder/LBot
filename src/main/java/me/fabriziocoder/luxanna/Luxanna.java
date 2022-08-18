@@ -41,5 +41,4 @@ public class Luxanna {
         new R4J(new APICredentials(properties.getProperty("RIOT_API_KEY")));
         DDragonAPI.getInstance().getChampions();
     }
-
 }
