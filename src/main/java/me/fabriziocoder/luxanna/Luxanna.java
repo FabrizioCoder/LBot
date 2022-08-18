@@ -33,7 +33,7 @@ public class Luxanna {
         builder.addSlashCommands(new HelpCommand(), new CoreCommand(), new SummonerCommand(), new ChampionCommand());
         CommandClient commandClient = builder.build();
 
-        JDABuilder.createLight(properties.getProperty("BOT_TOKEN"), GatewayIntent.GUILD_MEMBERS).addEventListeners(commandClient).build();
+        JDABuilder.createLight(properties.getProperty("BOT_TOKEN"), GatewayIntent.GUILD_MEMBERS).disableIntents(GatewayIntent.GUILD_MESSAGE_TYPING, GatewayIntent.DIRECT_MESSAGES, GatewayIntent.DIRECT_MESSAGE_REACTIONS, GatewayIntent.DIRECT_MESSAGE_TYPING, GatewayIntent.GUILD_BANS, GatewayIntent.GUILD_MESSAGE_TYPING, GatewayIntent.GUILD_INVITES).addEventListeners(commandClient).build();
 
         Orianna.setDefaultPlatform(Platform.NORTH_AMERICA);
         Orianna.setRiotAPIKey(properties.getProperty("RIOT_API_KEY"));
