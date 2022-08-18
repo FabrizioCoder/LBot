@@ -15,11 +15,10 @@ This is the source code for the Discord bot portions that compromise Luxanna Bot
 * [Orianna](https://github.com/meraki-analytics/orianna)
 
 
-## Screenshots
+## Screenshots of command examples
+![Profile Command](https://user-images.githubusercontent.com/74118796/185005875-b28536e6-cc20-43f3-9864-623c6ca6bd7a.png)
 
-![Profile Command](https://user-images.githubusercontent.com/74118796/183320281-9aa31018-cbb9-4c63-a4be-bc6a99423a2e.png)
-
-![Mastery Command](https://user-images.githubusercontent.com/74118796/183320304-1aa59de8-cad2-4cc2-9928-82a2d524eda7.png)
+![LastMatch Command](https://user-images.githubusercontent.com/74118796/185005966-67239225-c913-4b17-b9cc-d17de5b3606c.png)
 
 ## License
 
