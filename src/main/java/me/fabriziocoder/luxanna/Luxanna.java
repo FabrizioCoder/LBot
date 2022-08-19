@@ -4,6 +4,7 @@ import com.jagrosh.jdautilities.command.CommandClient;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import com.merakianalytics.orianna.Orianna;
 import com.merakianalytics.orianna.types.common.Platform;
+import me.fabriziocoder.database.MongoDB;
 import me.fabriziocoder.luxanna.commands.core.CoreCommand;
 import me.fabriziocoder.luxanna.commands.core.HelpCommand;
 import me.fabriziocoder.luxanna.commands.league.champion.ChampionCommand;
@@ -27,7 +28,6 @@ public class Luxanna {
         Properties properties = new Properties();
         properties.load(new File("classes/bot.properties").toURI().toURL().openStream());
 
-
         CommandClientBuilder builder = new CommandClientBuilder().setOwnerId(properties.getProperty("OWNER_ID")).setCoOwnerIds(properties.getProperty("CO_OWNER_1_ID"), properties.getProperty("CO_OWNER_2_ID")).setStatus(OnlineStatus.DO_NOT_DISTURB).useHelpBuilder(false).setServerInvite(properties.getProperty("SERVER_INVITE")).setActivity(Activity.watching("the summoner rift"));
 
         builder.addSlashCommands(new HelpCommand(), new CoreCommand(), new SummonerCommand(), new ChampionCommand());
@@ -40,5 +40,6 @@ public class Luxanna {
         Orianna.setDefaultLocale(properties.getProperty("DEFAULT_LOCALE"));
         new R4J(new APICredentials(properties.getProperty("RIOT_API_KEY")));
         DDragonAPI.getInstance().getChampions();
+        MongoDB.start(properties.getProperty("MONGO_URI"));
     }
 }

@@ -2,6 +2,7 @@ package me.fabriziocoder.luxanna.commands.league.champion;
 
 import com.jagrosh.jdautilities.command.SlashCommand;
 import com.jagrosh.jdautilities.command.SlashCommandEvent;
+import me.fabriziocoder.database.MongoDB;
 import me.fabriziocoder.luxanna.utils.ChampionUtils;
 import me.fabriziocoder.luxanna.utils.EmojiUtils;
 import me.fabriziocoder.luxanna.utils.SummonerUtils;
@@ -13,6 +14,7 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import no.stelar7.api.r4j.basic.constants.api.regions.LeagueShard;
 import no.stelar7.api.r4j.pojo.lol.championmastery.ChampionMastery;
 import no.stelar7.api.r4j.pojo.lol.summoner.Summoner;
+import org.bson.Document;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -29,7 +31,7 @@ public class MasterySubCommand extends SlashCommand {
         this.help = COMMAND_DESCRIPTION;
         this.cooldown = 15;
         this.guildOnly = false;
-        this.options = List.of(new OptionData(OptionType.STRING, "summoner-name", "The name of the summoner to search for").setRequired(true), new OptionData(OptionType.STRING, "region", "The region of the account").addChoices(regionChoices()).setRequired(true));
+        this.options = List.of(new OptionData(OptionType.STRING, "summoner-name", "The name of the summoner to search for").setRequired(false), new OptionData(OptionType.STRING, "region", "The region of the account").addChoices(regionChoices()).setRequired(false));
     }
 
     public static String humanReadableInt(long number) {
@@ -80,6 +82,22 @@ public class MasterySubCommand extends SlashCommand {
 
         String summonerName = event.optString("summoner-name");
         String region = event.optString("region");
+        if (summonerName == null && region == null) {
+            Document existUserProfile = MongoDB.userProfileExists(event.getUser().getIdLong()).first();
+            if (existUserProfile != null) {
+                summonerName = existUserProfile.getString("summonerName");
+                region = existUserProfile.getString("summonerPlatform");
+            } else {
+                event.getHook().editOriginal(String.format("%s You don't yet have an account registered to use the no-argument command.", EmojiUtils.Discord.X)).queue();
+                return;
+            }
+        } else if (summonerName == null) {
+            event.getHook().editOriginal(String.format("%s You need to specify a summoner name.", EmojiUtils.Discord.X)).queue();
+            return;
+        } else if (region == null) {
+            event.getHook().editOriginal(String.format("%s You need to specify a region.", EmojiUtils.Discord.X)).queue();
+            return;
+        }
 
         final Summoner summonerData = SummonerUtils.getSummonerByName(summonerName, LeagueShard.valueOf(region));
 
