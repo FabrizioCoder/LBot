@@ -15,7 +15,7 @@ This is the source code for the Discord bot portions that compromise Luxanna Bot
 * [Orianna](https://github.com/meraki-analytics/orianna)
 
 
-## Commands
+## Command's examples
 
 See Luxanna's commands with its "/" slash integration. Try some commands like "/summoner lastmatch" or get more information with "/help".
 
@@ -31,6 +31,13 @@ See Luxanna's commands with its "/" slash integration. Try some commands like "/
 ## Feedback
 
 If you have any feedback, please reach out to me at Discord: `FabrizioCoder#6030`.
+
+## Links
+
+- Top.gg: [click here](https://top.gg/bot/949565943275720736)
+- Discord bots:  [click here](https://discord.bots.gg/bots/949565943275720736)
+- Support server:  [click here](https://discord.gg/AcruVkyYHm)
+- Github repository: [click here]( https://github.com/FabrizioCoder/LuxannaBot)
 
 
 ## Legal information
