@@ -114,7 +114,6 @@ public class CurrentSubCommand extends SlashCommand {
             }
 
             String[] bannedChampions = {String.format("`Blue team:` %s", String.join("", bannedChampionsByBlueTeam)), String.format("`Red team:` %s", String.join(", ", bannedChampionsByRedTeam)),};
-
             messageEmbed.addField("> Banned champions", String.join("\n", bannedChampions), false);
         }
 
