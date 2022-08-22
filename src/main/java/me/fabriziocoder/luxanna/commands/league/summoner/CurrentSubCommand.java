@@ -93,7 +93,7 @@ public class CurrentSubCommand extends SlashCommand {
 
         EmbedBuilder messageEmbed = new EmbedBuilder().setColor(0x2564f4).setThumbnail(SummonerUtils.makeProfileIconURL(String.valueOf(summonerData.getProfileIconId()))).setAuthor("Current match").setTitle(String.format("`%s` - `%s`", summonerData.getName(), summonerData.getPlatform().prettyName()));
 
-        String[] gameInformation = {String.format("`Map:` %s", summonerCurrentGame.getMap().prettyName()), String.format("`Game mode:` %s", summonerCurrentGame.getGameMode().prettyName()), String.format("`Game type:` %s", summonerCurrentGame.getGameType().prettyName()), String.format("`Queue type:` %s", summonerCurrentGame.getGameQueueConfig().prettyName()), String.format("`Game start:` <t:%s:R>", summonerCurrentGame.getGameStart() / 1000)};
+        String[] gameInformation = {String.format("`Map:` %s", summonerCurrentGame.getMap().prettyName()), String.format("`Game mode:` %s", summonerCurrentGame.getGameMode().prettyName()), String.format("`Game type:` %s", summonerCurrentGame.getGameType().prettyName()), String.format("`Queue type:` %s", summonerCurrentGame.getGameQueueConfig().prettyName()), String.format("`Game started:` <t:%s:R>", summonerCurrentGame.getGameStart() > 1000 ? summonerCurrentGame.getGameStart() / 1000 : summonerCurrentGame.getGameStart())};
         messageEmbed.addField("> Match infomation", String.join("\n", gameInformation), false);
 
         if (!summonerCurrentGame.getBannedChampions().isEmpty()) {
