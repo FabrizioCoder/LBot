@@ -16,8 +16,9 @@ public class PingSubCommand extends SlashCommand {
     @Override
     public void execute(SlashCommandEvent event) {
         long gateway = event.getJDA().getGatewayPing();
+        long rest = event.getJDA().getRestPing().complete();
         event.deferReply().queue(
-                hook -> hook.editOriginal(String.format("Pong! (gateway: %sms)", gateway)).queue()
+                hook -> hook.editOriginal(String.format("Pong! (gateway: %sms, rest: %sms)", gateway, rest)).queue()
         );
     }
 }

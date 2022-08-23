@@ -21,10 +21,10 @@ public class BotInfoSubCommand extends SlashCommand {
         event.deferReply().queue();
         EmbedBuilder messageEmbed = new EmbedBuilder().setTitle(String.format("%s - your League of Legends bot", event.getJDA().getSelfUser().getName())).setColor(0x2564f4).setFooter("Last restart", null).setTimestamp(event.getClient().getStartTime()).setThumbnail(event.getJDA().getSelfUser().getAvatarUrl()).setImage("https://i.imgur.com/XTgkUlF.png");
 
-        String[] botStats = {String.format("`Servers:` %,7d", event.getJDA().getGuilds().size()), String.format("`Gateway ping:` %sms", event.getJDA().getGatewayPing())};
+        String[] botStats = {String.format("`Servers:` %,7d", event.getJDA().getGuilds().size()), String.format("`Gateway ping:` %sms", event.getJDA().getGatewayPing()), String.format("`Rest ping:` %sms", event.getJDA().getRestPing().complete())};
         messageEmbed.addField("> Bot stats", String.join("\n", botStats), false);
 
-        String[] librariesInfoDescription = {String.format("`JDA:` [%s](%s)", JDAInfo.VERSION, JDAInfo.GITHUB), String.format("`JDA-Utilities:` [%s](%s)", JDAUtilitiesInfo.VERSION, JDAUtilitiesInfo.GITHUB), String.format("`Orianna:` [%s](%s)", "4.0.0-rc8", "https://github.com/meraki-analytics/orianna"), String.format("`R4J:` [%s](%s)", "2.1.21", "https://github.com/stelar7/R4J")};
+        String[] librariesInfoDescription = {String.format("`JDA:` [%s](%s)", JDAInfo.VERSION, JDAInfo.GITHUB), String.format("`JDA-Utilities:` [%s](%s)", JDAUtilitiesInfo.VERSION, JDAUtilitiesInfo.GITHUB), String.format("`Orianna:` [%s](%s)", "4.0.0-rc8", "https://github.com/meraki-analytics/orianna"), String.format("`R4J:` [%s](%s)", "2.1.22", "https://github.com/stelar7/R4J")};
         messageEmbed.addField("> Libraries versions", String.join("\n", librariesInfoDescription), false);
 
         messageEmbed.addField("> Developer", event.getJDA().retrieveApplicationInfo().complete().getOwner().getAsMention(), true);
