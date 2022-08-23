@@ -26,7 +26,6 @@ public class BotInfoSubCommand extends SlashCommand {
 
         String[] librariesInfoDescription = {String.format("`JDA:` [%s](%s)", JDAInfo.VERSION, JDAInfo.GITHUB), String.format("`JDA-Utilities:` [%s](%s)", JDAUtilitiesInfo.VERSION, JDAUtilitiesInfo.GITHUB), String.format("`Orianna:` [%s](%s)", "4.0.0-rc8", "https://github.com/meraki-analytics/orianna"), String.format("`R4J:` [%s](%s)", "2.1.22", "https://github.com/stelar7/R4J")};
         messageEmbed.addField("> Libraries versions", String.join("\n", librariesInfoDescription), false);
-
         messageEmbed.addField("> Developer", event.getJDA().retrieveApplicationInfo().complete().getOwner().getAsMention(), true);
         messageEmbed.addField("> Links", String.format("[Support Server](%s)\n[Bot Invite](%s)", event.getClient().getServerInvite(), "https://discord.com/api/oauth2/authorize?client_id=949565943275720736&permissions=2147796992&scope=bot%20applications.commands"), true);
 
