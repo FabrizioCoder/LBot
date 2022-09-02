@@ -37,7 +37,7 @@ public class HelpCommand extends SlashCommand {
             }
         });
 
-        MessageEmbed messageEmbed = new EmbedBuilder().setColor(0x2564f4).setTitle(String.format("%s — Commands", event.getJDA().getSelfUser().getName())).setDescription(String.format("Hi! I'm %s, the perfect way to play your games.", event.getJDA().getSelfUser().getName())).addField("» League of Legends", String.join("", leagueCommands), false).addField("» Core", String.join("", coreCommands), false).setThumbnail(event.getJDA().getSelfUser().getAvatarUrl()).setImage("https://i.imgur.com/ntMRhP0.png").build();
+        MessageEmbed messageEmbed = new EmbedBuilder().setColor(0x2564f4).setTitle(String.format("%s — Commands", event.getJDA().getSelfUser().getName()), "https://top.gg/bot/949565943275720736").setDescription(String.format("Hi! I'm %s, the perfect way to play your games.", event.getJDA().getSelfUser().getName())).addField("» League of Legends", String.join("", leagueCommands), false).addField("» Core", String.join("", coreCommands), false).setThumbnail(event.getJDA().getSelfUser().getAvatarUrl()).setImage("https://i.imgur.com/ntMRhP0.png").build();
 
         event.getHook().sendMessageEmbeds(messageEmbed).queue();
     }

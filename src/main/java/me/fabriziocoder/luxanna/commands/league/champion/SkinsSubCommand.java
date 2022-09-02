@@ -69,7 +69,7 @@ public class SkinsSubCommand extends SlashCommand {
             skinsText.append(String.format("`%3d.` [%s](%s)\n", (i - 1) + 1, skin.getName(), skin.getSplashImageURL()));
         }
 
-        MessageEmbed messageEmbed = new EmbedBuilder().setColor(0x2564f4).setTitle(String.format("Skins for `%s`", championData.getName())).setThumbnail(championData.getImage().getURL()).setDescription(skinsText.toString()).build();
+        MessageEmbed messageEmbed = new EmbedBuilder().setColor(0x2564f4).setTitle(String.format("Skins for `%s`", championData.getName())).setThumbnail(championData.getImage().getURL()).setDescription(skinsText.toString()).setFooter("Vote for me | https://top.gg/bot/949565943275720736/vote").build();
 
         event.getHook().sendMessageEmbeds(messageEmbed).queue();
     }

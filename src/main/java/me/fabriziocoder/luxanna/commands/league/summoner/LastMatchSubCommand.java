@@ -157,7 +157,7 @@ public class LastMatchSubCommand extends SlashCommand {
         }
 
         messageEmbed.setTitle(String.format("`%s` - `%s` - `%s`", summonerData.getName(), summonerData.getPlatform().prettyName(), didWin ? "Victory" : "Defeat")).addField("> Blue team", String.join("", blueTeamParticipants), true).addField("> Red team", String.join("", redTeamParticipants), true).setColor(didWin ? 0x2564f4 : 0xff2424);
-
+        messageEmbed.setFooter("Vote for me | https://top.gg/bot/949565943275720736/vote");
         event.getHook().sendMessageEmbeds(messageEmbed.build()).queue();
 
 

@@ -187,6 +187,8 @@ public class ProfileSubCommand extends SlashCommand {
             messageEmbed.addField("> Recent Matches", summonerRecentMatchesText.toString(), false);
         }
 
+        messageEmbed.setFooter("Vote for me | https://top.gg/bot/949565943275720736/vote");
+
         event.getHook().sendMessageEmbeds(messageEmbed.build()).queue();
 
     }

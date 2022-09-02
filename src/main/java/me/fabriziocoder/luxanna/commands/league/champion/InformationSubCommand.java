@@ -63,6 +63,7 @@ public class InformationSubCommand extends SlashCommand {
 
         messageEmbed.addField("> Ally tips", championData.getAllyTips().toString().replace("[", "").replace("]", ""), true);
         messageEmbed.addField("> Enemy tips", championData.getEnemyTips().toString().replace("[", "").replace("]", ""), true);
+        messageEmbed.setFooter("Vote for me | https://top.gg/bot/949565943275720736/vote");
 
         event.getHook().sendMessageEmbeds(messageEmbed.build()).queue();
     }

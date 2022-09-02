@@ -135,6 +135,7 @@ public class CurrentSubCommand extends SlashCommand {
 
         messageEmbed.addField("> Blue team", String.join("", blueTeamParticipants), true);
         messageEmbed.addField("> Red team", String.join("", redTeamParticipants), true);
+        messageEmbed.setFooter("Vote for me | https://top.gg/bot/949565943275720736/vote");
 
         event.getHook().sendMessageEmbeds(messageEmbed.build()).queue();
     }

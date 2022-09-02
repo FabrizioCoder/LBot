@@ -7,7 +7,6 @@ import me.fabriziocoder.luxanna.utils.ChampionUtils;
 import me.fabriziocoder.luxanna.utils.EmojiUtils;
 import me.fabriziocoder.luxanna.utils.SummonerUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
@@ -120,7 +119,8 @@ public class MasterySubCommand extends SlashCommand {
             String championName = ChampionUtils.getChampionNameById(mastery.getChampionId());
             str.append(String.format("`%3d.` [`%5s`] [`%d`] %s %s%n", i + 1, humanReadableInt(mastery.getChampionPoints()), mastery.getChampionLevel(), EmojiUtils.getChampionEmojiByChampionName(championName), championName));
         }
-        MessageEmbed messageEmbed = new EmbedBuilder().setColor(0x2564f4).setAuthor(String.format("Top %s Champion%s", summonerTopChampions.size(), summonerTopChampions.size() == 1 ? "" : "s")).setTitle(String.format("`%s` - `%s`", summonerData.getName(), summonerData.getPlatform().prettyName())).setThumbnail(SummonerUtils.makeProfileIconURL(String.valueOf(summonerData.getProfileIconId()))).setDescription(str.toString()).build();
-        event.getHook().sendMessageEmbeds(messageEmbed).queue();
+        EmbedBuilder messageEmbed = new EmbedBuilder().setColor(0x2564f4).setAuthor(String.format("Top %s Champion%s", summonerTopChampions.size(), summonerTopChampions.size() == 1 ? "" : "s")).setTitle(String.format("`%s` - `%s`", summonerData.getName(), summonerData.getPlatform().prettyName())).setThumbnail(SummonerUtils.makeProfileIconURL(String.valueOf(summonerData.getProfileIconId()))).setDescription(str.toString());
+        messageEmbed.setFooter("Vote for me | https://top.gg/bot/949565943275720736/vote");
+        event.getHook().sendMessageEmbeds(messageEmbed.build()).queue();
     }
 }

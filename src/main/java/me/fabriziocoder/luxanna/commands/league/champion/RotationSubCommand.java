@@ -4,7 +4,6 @@ import com.jagrosh.jdautilities.command.SlashCommand;
 import com.jagrosh.jdautilities.command.SlashCommandEvent;
 import me.fabriziocoder.luxanna.utils.EmojiUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
@@ -61,8 +60,8 @@ public class RotationSubCommand extends SlashCommand {
             StaticChampion freeChampion = freeChampions.get(i);
             freeChampionsToPLayText.append(String.format("`%3d.` %s %s\n", i + 1, EmojiUtils.getChampionEmojiByChampionName(freeChampion.getName()), freeChampion.getName()));
         }
-        MessageEmbed messageEmbed = new EmbedBuilder().setColor(0x2564f4).setThumbnail(event.getJDA().getSelfUser().getAvatarUrl()).setTitle(String.format("Free champions rotation to play in `%s`", LeagueShard.valueOf(event.optString("region")).prettyName())).setDescription(freeChampionsToPLayText.toString()).build();
-
-        event.getHook().sendMessageEmbeds(messageEmbed).queue();
+        EmbedBuilder messageEmbed = new EmbedBuilder().setColor(0x2564f4).setThumbnail(event.getJDA().getSelfUser().getAvatarUrl()).setTitle(String.format("Free champions rotation to play in `%s`", LeagueShard.valueOf(event.optString("region")).prettyName())).setDescription(freeChampionsToPLayText.toString());
+        messageEmbed.setFooter("Vote for me | https://top.gg/bot/949565943275720736/vote");
+        event.getHook().sendMessageEmbeds(messageEmbed.build()).queue();
     }
 }
