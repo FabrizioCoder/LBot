@@ -8,6 +8,6 @@ public class ChampionUtils {
     }
 
     public static String normalizeChampionName(String championName) {
-        return championName.replace("LeeSin", "Lee Sin").replace("XinZhao", "Xin Zhao").replace("DrMundo", "Dr. Mundo").replace("JarvanIV", "Jarvan IV").replace("MasterYi", "Master Yi").replace("TahmKench", "Tahm Kench").replace("MissFortune", "Miss Fortune").replace("TwistedFate", "Twisted Fate").replace("RenataGlasc", "Renata Glasc").replace("AurelionSol", "Aurelion Sol");
+        return championName.replace("LeeSin", "Lee Sin").replace("XinZhao", "Xin Zhao").replace("DrMundo", "Dr. Mundo").replace("JarvanIV", "Jarvan IV").replace("MasterYi", "Master Yi").replace("TahmKench", "Tahm Kench").replace("MissFortune", "Miss Fortune").replace("TwistedFate", "Twisted Fate").replace("RenataGlasc", "Renata Glasc").replace("Renata", "Renata Glasc").replace("AurelionSol", "Aurelion Sol");
     }
 }
